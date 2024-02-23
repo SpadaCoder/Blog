@@ -37,7 +37,6 @@ print_r($post);
 echo "</pre>";
 $post->setTitle('Test');
 
-
 echo "<pre>";
 print_r($post);
 echo "</pre>";
