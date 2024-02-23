@@ -1,0 +1,25 @@
+#post {
+    background-color: #f9f9f9;
+    padding: 20px 0;
+}
+
+.post-content {
+    margin-bottom: 20px;
+}
+
+.post-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.post-chapo {
+    font-size: 18px;
+    color: #666;
+}
+
+.post-content {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+}
