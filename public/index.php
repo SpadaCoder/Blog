@@ -41,6 +41,7 @@ echo "<pre>";
 print_r($post);
 echo "</pre>";
 echo $post->getTitle();
+echo $post->getChapo();
 include_once(__DIR__ . '/../templates/pages/home.php');
 
 
