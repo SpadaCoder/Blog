@@ -28,10 +28,12 @@
 </nav>
 <section id="post">
     <div class="container">
-        <div class="post-content">
+        <div class="post-all">
     <h1><?php echo $post->getTitle(); ?></h1>
     <p class="post-chapo"><?php echo $post->getChapo(); ?></p>
     <p class="post-content"><?php echo $post->getContent(); ?></p>
+    <p class="post-author"><?php echo $post->getAuthor(); ?></p>
+    <p class="post-modified"><?php echo $post->getModified(); ?></p>
         </div>
     </div>
 </section>

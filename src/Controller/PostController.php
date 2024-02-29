@@ -11,6 +11,11 @@ class PostController {
         echo $post->getTitle();
         echo $post->getChapo();
         echo $post->getContent();
+<<<<<<< HEAD
+=======
+        echo $post->getAuthor();
+        echo $post->getModified();
+>>>>>>> main
         include_once(__DIR__ . '/../../templates/pages/home.php');
     }
 
