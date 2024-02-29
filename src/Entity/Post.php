@@ -12,6 +12,11 @@ class Post
 
     private $content = 'content';
 
+    private $author = 'author';
+
+    private $modified = 'modified';
+
+
     public function getTitle(): string
     {
         return $this->title;
@@ -56,6 +61,28 @@ class Post
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getModified(): string
+    {
+        return $this->modified;
+    }
+    public function setModified(string $modified): self
+    {
+        $this->modified = $modified;
 
         return $this;
     }

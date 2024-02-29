@@ -19,7 +19,7 @@ $filteredData = filterInput($_POST);
 $created = date ('Y-m-d');
 
 // Insertion des données dans la base
-$insertPost = $mysqlClient->prepare('INSERT INTO post (title, slug, chapo, content, picture, created) VALUES (:title, :slug, :chapo, :content, :picture, :created)');
+$insertPost = $mysqlClient->prepare('INSERT INTO post (title, slug, chapo, content, picture, created, modified) VALUES (:title, :slug, :chapo, :content, :picture, :created, :modified)');
 $insertPost = execute(array(
     ':title' => $filteredData['title'],
     ':slug' => $filteredData['slug'],
