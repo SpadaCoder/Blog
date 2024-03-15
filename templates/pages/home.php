@@ -9,22 +9,27 @@
 <body>
 
 <header>
-    <div class="container">
-        <h1>Sandra Spadacini</h1>
-        <img src="img/profile-picture.jpg" alt="Sandra Spadacini">
-        <p>"Bienvenue dans le royaume de SpadaCoder, où le code devient une œuvre d'expression et les idées prennent vie numériquement."</p>
-    </div>
+        <div class="profile-info">
+                <div class="profile-picture">
+                    <img src="/../../../public/assets/images/profile-picture.jpg" alt="Sandra Spadacini">
+                </div>
+                <div class="welcome-message">
+                    <p class="devise">Bienvenue dans le royaume de SpadaCoder, où le code devient une œuvre d'expression et les idées prennent vie numériquement.</p>
+                </div>
+            </div>
 </header>
 
 <nav>
-    <div class="container">
-        <ul>
-            <li><a href="index.php">Accueil</a></li>
-            <li><a href="dashboard.php">Tableau de bord</a></li>
-            <li><a href="admin.php">Paramètre</a></li>
-
-        </ul>
-    </div>
+<div class="menu">
+    <a href="home.php" class="menu-item">
+        <img src="/../../../public/assets/images/accueil.png" alt="Accueil">
+        <div>Accueil</div>
+    </a>
+    <a href="dashboard.php" class="menu-item">
+        <img src="/../../../public/assets/images/admin.png" alt="Tableau de bord">
+        <div>Tableau de bord</div>
+    </a>
+</div>
 </nav>
 <section id="post">
     <div class="container">
@@ -32,8 +37,11 @@
     <h1><?php echo $post->getTitle(); ?></h1>
     <p class="post-chapo"><?php echo $post->getChapo(); ?></p>
     <p class="post-content"><?php echo $post->getContent(); ?></p>
-    <p class="post-author"><?php echo $post->getAuthor(); ?></p>
-    <p class="post-modified"><?php echo $post->getModified(); ?></p>
+    <div class="post-meta">
+        <p class="post-author">Ecrit par : <?php echo $post->getAuthor(); ?></p>
+        <p class="post-modified">Modifié le : <?php echo $post->getModified(); ?></p>
+    </div>
+
         </div>
     </div>
 </section>
@@ -58,7 +66,7 @@
 <section id="cv">
     <div class="container">
         <h2>Mon CV</h2>
-        <p>Téléchargez mon CV au format PDF : <a href="img/cv.pdf" target="_blank">CV.pdf</a></p>
+        <p>Téléchargez mon CV au format PDF : <a href="/../../../public/assets/fichiers/cv.pdf" target="_blank">CV.pdf</a></p>
     </div>
 </section>
 

@@ -8,7 +8,7 @@ if (isset($_GET['objet']) && 'post' === $_GET['objet']) {
         //Appel controleur affiche post
         require_once (__DIR__ . '/../src/Controller/PostController.php');
         $postController = new \App\Controller\PostController();
-        $postController->display();
+        $postController->display(); // To do : à remplacer $_GET['id']
     // si action = add
     if (isset($_GET['action']) && 'add' === $_GET['action']) {
         // Appel controleur ajout post

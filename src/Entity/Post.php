@@ -14,9 +14,18 @@ class Post
 
     private $author = 'author';
 
-    private $modified = 'modified';
+    private $created = '2024-03-01 13:38:28';
+
+    private $modified = '2024-03-01 13:38:28';
+
+    // Méthode : MAJ date de modification
+    public function updateModified()
+    {
+        $this->modified = date('Y-m-d H:i:s');
+    }
 
 
+    // Méthode : getter et setter
     public function getTitle(): string
     {
         return $this->title;

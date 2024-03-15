@@ -14,9 +14,8 @@ function filterInput($data) {
 // Récupération et sécurisation des données du formulaire
 $filteredData = filterInput($_POST);
 
-
-// Date de création par défaut date du jour
-$created = date ('Y-m-d');
+// Date de création par défaut
+$created = date('Y-m-d H:i:s');
 
 // Insertion des données dans la base
 $insertPost = $mysqlClient->prepare('INSERT INTO post (title, slug, chapo, content, picture, created, modified) VALUES (:title, :slug, :chapo, :content, :picture, :created, :modified)');
@@ -27,6 +26,7 @@ $insertPost = execute(array(
     ':content' => $filteredData['content'],
     ':picture' => $filteredData['picture'],
     ':created' => $created,
+    ':modified' => $created,
 ))
 
 ?>
