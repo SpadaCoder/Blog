@@ -1,6 +1,6 @@
 <?php
 // Connexion à la base de donnée
-require_once(__DIR__ . '/../data.php' );
+require_once(__DIR__ . '/../../db.php' );
 
 // Fonction de filtrage et validation des données
 function filterInput($data) {

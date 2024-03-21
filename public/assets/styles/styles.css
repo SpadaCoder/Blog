@@ -73,3 +73,32 @@
     margin: 0;
 }
 
+footer {
+    background-color: #EAD1F8;
+    color: #6A4873;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.socials {
+    margin-bottom: 20px;
+}
+
+.socials h2 {
+    margin-bottom: 10px;
+    color: #624FA0;
+}
+
+.socials a {
+    display: inline-block;
+    margin-right: 10px;
+    color: #624FA0;
+    text-decoration: none;
+}
+
+.footer-bottom {
+    background-color: #BFADD9;
+    color: #FFFFFF;
+    padding: 10px 0;
+    font-size: 0.8em;
+}

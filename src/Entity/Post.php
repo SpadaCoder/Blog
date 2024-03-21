@@ -18,6 +18,8 @@ class Post
 
     private $modified = '2024-03-01 13:38:28';
 
+    private $id = 'id';
+
     // Méthode : MAJ date de modification
     public function updateModified()
     {
@@ -92,6 +94,17 @@ class Post
     public function setModified(string $modified): self
     {
         $this->modified = $modified;
+
+        return $this;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+    public function setId(string $id): self
+    {
+        $this->id = $id;
 
         return $this;
     }
