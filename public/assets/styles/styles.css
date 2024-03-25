@@ -73,6 +73,51 @@
     margin: 0;
 }
 
+h2 {
+    color: #624FA0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#contact {
+    background-color: #BFADD9;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+#create-post {
+    background-color: #BFADD9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+#create-post h1 {
+    color: #624FA0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    color: #6A4873;
+    margin-bottom: 5px
+}
+
+.form-control {
+    width: 100%; 
+    margin: 0 auto; 
+    margin-bottom: 15px;
+}
+
 footer {
     background-color: #EAD1F8;
     color: #6A4873;

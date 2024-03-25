@@ -24,8 +24,15 @@ if (isset ($_GET['objet']) && 'post' === $_GET['objet']) {
     // si action = add
     if (isset ($_GET['action']) && 'add' === $_GET['action']) {
         // Appel controleur ajout post
-        echo 'OK';
+        $postController->add();
     }
+
+        // si action = store
+        if (isset ($_GET['action']) && 'store' === $_GET['action']) {
+            // Appel controleur ajout post
+            $postController->store();
+        }
+
     // si action = modify
     if (isset ($_GET['action']) && 'modify' === $_GET['action']) {
         // Appel controleur modifier post
