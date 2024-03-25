@@ -1,4 +1,4 @@
-   <?php
+<?php
 // Inclure le fichier header.php
 include('header.php'); 
 ?>
@@ -17,14 +17,14 @@ include('header.php');
     <div class="container">
         <h2>Contactez-moi</h2>
         <form action="process_contact.php" method="post">
-            <label for="nom_prenom">Nom/Prénom :</label>
-            <input type="text" name="nom_prenom" required>
+            <label for="nom_prenom">Nom et Prénom :</label>
+            <input type="text" class="form-control name="nom_prenom" required>
 
             <label for="email">E-mail de contact :</label>
-            <input type="email" name="email" required>
+            <input type="email" class="form-control" name="email" required>
 
             <label for="message">Message :</label>
-            <textarea name="message" rows="4" required></textarea>
+            <textarea name="message" class="form-control" rows="4" required></textarea>
 
             <input type="submit" value="Envoyer">
         </form>
