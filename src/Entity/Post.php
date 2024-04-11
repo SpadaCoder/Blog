@@ -14,6 +14,8 @@ class Post
 
     private $author = 'author';
 
+    private $picture = 'picture';
+
     private $created = '2024-03-01 13:38:28';
 
     private $modified = '2024-03-01 13:38:28';
@@ -87,6 +89,17 @@ class Post
         return $this;
     }
 
+    public function getPicture(): string
+    {
+        return $this->picture;
+    }
+    public function setPicture(string $picture): self
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
     public function getModified(): string
     {
         return $this->modified;
@@ -107,6 +120,26 @@ class Post
         $this->id = $id;
 
         return $this;
+    }
+
+    public function generateSlug($title)
+    {
+        // Convertir le titre en minuscules
+        $slug = mb_strtolower($title);
+        // Convertir les caractères accentués en caractères non accentués
+        $slug = iconv('UTF-8', 'ASCII//TRANSLIT', $slug);
+        // Supprimer les apostrophes
+        $slug = str_replace(["'", '`'], '', $slug);
+        // Remplacer les caractères spéciaux par des tirets
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+        
+        // Supprimer les tirets en double
+        $slug = preg_replace('/-+/', '-', $slug);
+
+        // Supprimer les tirets au début et à la fin
+        $slug = trim($slug, '-');
+
+        return $slug;
     }
 }
 
