@@ -73,6 +73,14 @@
     margin: 0;
 }
 
+.post-options {
+    margin-top: 10px; 
+}
+
+.post-options a {
+    margin-right: 10px; 
+}
+
 h2 {
     color: #624FA0;
     text-align: center;
@@ -95,6 +103,19 @@ h2 {
 }
 
 #create-post h1 {
+    color: #624FA0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#update-post {
+    background-color: #BFADD9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+#update-post h1 {
     color: #624FA0;
     text-align: center;
     margin-bottom: 20px;

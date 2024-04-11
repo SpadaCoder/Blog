@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Blog - Découvrer mes créations</title>
+    <title>Mon Blog - Mes créations</title>
     <link rel="stylesheet" href="/../public/assets/styles/styles.css">
 </head>
 

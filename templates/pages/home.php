@@ -9,6 +9,8 @@ include('header.php');
                 <h1><?php echo $post->getTitle(); ?></h1>
                 <p class="post-chapo"><?php echo $post->getChapo(); ?></p>
                 <a href="index.php?objet=post&action=display&id=<?php echo $post->getId(); ?>">Voir l'article</a>
+                <a href="index.php?objet=post&action=update&id=<?php echo $post->getId(); ?>">Modifier l'article</a>
+                <a href="index.php?objet=post&action=delete&id=<?php echo $post->getId(); ?>">Supprimer l'article</a>
             </div>
         <?php endforeach; ?>
     </div>
