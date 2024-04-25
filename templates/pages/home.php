@@ -8,13 +8,17 @@ include('header.php');
             <div class="post-all">
                 <h1><?php echo $post->getTitle(); ?></h1>
                 <p class="post-chapo"><?php echo $post->getChapo(); ?></p>
+                <div class="post-options">
                 <a href="index.php?objet=post&action=display&id=<?php echo $post->getId(); ?>">Voir l'article</a>
                 <a href="index.php?objet=post&action=update&id=<?php echo $post->getId(); ?>">Modifier l'article</a>
-                <a href="index.php?objet=post&action=delete&id=<?php echo $post->getId(); ?>">Supprimer l'article</a>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>
 </section>
+
+<h2><a href="index.php?objet=post&action=displayAll">Accéder à l'ensemble des posts</a></h2>
+
 <section id="contact">
     <div class="container">
         <h2>Contactez-moi</h2>
