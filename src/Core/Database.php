@@ -8,7 +8,7 @@ class Database
 
     public function __construct()
     {
-        include_once(__DIR__ . '/../../data.php' );
+        include(__DIR__ . '/../../data.php' );
 
         try {
             $pdo = new \PDO("mysql:host=" . $dbServer . "; dbname=" . $dbBase, $dbUser, $dbPassword);

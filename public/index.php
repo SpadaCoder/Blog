@@ -21,6 +21,12 @@ if (isset($_GET['objet']) && 'post' === $_GET['objet']) {
 
         $postController->display();
     }
+    //si action = displayAll
+    if (isset($_GET['action']) && 'displayAll' === $_GET['action']) {
+        // Appel controleur ajout post
+        $postController->displayAll();
+    }
+
     // si action = add
     if (isset($_GET['action']) && 'add' === $_GET['action']) {
         // Appel controleur ajout post

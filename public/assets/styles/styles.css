@@ -74,7 +74,8 @@
 }
 
 .post-options {
-    margin-top: 10px; 
+    margin: 10px; 
+    text-align: center;
 }
 
 .post-options a {

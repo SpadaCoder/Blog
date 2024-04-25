@@ -4,23 +4,25 @@ namespace App\Entity;
 
 class Post
 {
-    private $title = 'titre';
+    private $title;
 
-    private $chapo = 'chapo';
+    private $chapo;
 
-    private $slug = 'slug';
+    private $slug;
 
-    private $content = 'content';
+    private $content;
 
-    private $author = 'author';
+    private $author;
 
-    private $picture = 'picture';
+    private $userId;
 
-    private $created = '2024-03-01 13:38:28';
+    private $picture;
 
-    private $modified = '2024-03-01 13:38:28';
+    private $created;
 
-    private $id = 'id';
+    private $modified;
+
+    private $id;
 
     // Méthode : MAJ date de modification
     public function updateModified()
@@ -88,7 +90,16 @@ class Post
 
         return $this;
     }
+    public function getUserId(): string
+    {
+        return $this->userId;
+    }
+    public function setUserId(string $userId): self
+    {
+        $this->userId = $userId;
 
+        return $this;
+    }
     public function getPicture(): string
     {
         return $this->picture;

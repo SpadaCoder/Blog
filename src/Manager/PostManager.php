@@ -17,46 +17,46 @@ class PostManager
     {
         // Requête 
         $sql = "
-                SELECT post.*, user.first_name AS author
-                FROM post
-                JOIN user ON post.user_id = user.id
-                ORDER BY post.id DESC
-                LIMIT 3
-                ";
+            SELECT post.*
+            FROM post
+            ORDER BY post.id DESC
+            LIMIT 3
+        ";
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->execute();
 
         // Récupérer tous les résultats en une seule fois
         $rows = $stmt->fetchAll();
 
-        // Créer un tableau pour stocker les objets Post
-        $posts = [];
+        return $this->hydratePost($rows);
 
-        // Boucler sur les résultats et hydrater les objets Post
-        foreach ($rows as $row) {
-            $post = new Post();
-            $post->setTitle($row['title']);
-            $post->setChapo($row['chapo']);
-            $post->setContent($row['content']);
-            $post->setAuthor($row['author']);
-            $post->setModified($row['modified']);
-            $post->setId($row['id']);
-
-            // Ajouter le post au tableau
-            $posts[] = $post;
-        }
-
-            // Retourner les posts
-            return $posts;
-        
     }
 
+    public function getPostAll(): array
+    {
+        // Requête 
+        $sql = "
+            SELECT post.*
+            FROM post
+            ORDER BY post.id DESC
+        ";
+        $stmt = $this->database->getConnection()->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll();
+
+        return $this->hydratePost($rows);
+
+    }
 
     public function create($post)
     {
+        //To do récupérer depuis la session
+        $userId = 1;
         // Requête SQL d'insertion
-        $sql = "INSERT INTO post (title, slug, chapo, content, picture, created, modified, user_id) 
-                    VALUES (:title, :slug, :chapo, :content, :picture, NOW(), NOW(), 1)";
+        $sql = "
+            INSERT INTO post (title, slug, chapo, content, picture, created, modified, user_id) 
+            VALUES (:title, :slug, :chapo, :content, :picture, NOW(), NOW(), $userId)
+        ";
         $stmt = $this->database->getConnection()->prepare($sql);
 
         //Exécution de la requête avec les données du formulaire
@@ -72,11 +72,10 @@ class PostManager
     {
         // Requête pour récupérer les détails du post spécifique
         $sql = "
-                      SELECT post.*, user.first_name AS author
-                      FROM post
-                      JOIN user ON post.user_id = user.id
-                      WHERE post.id = :id
-                  ";
+            SELECT post.*
+            FROM post
+            WHERE post.id = :id
+        ";
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->execute([':id' => $id]);
 
@@ -90,10 +89,10 @@ class PostManager
     {
         // Requête de modification
         $sql = "
-  UPDATE post
-  SET title = :title, slug = :slug, chapo = :chapo, content = :content, picture = :picture, modified = NOW()
-  WHERE id = :id
-  ";
+            UPDATE post
+            SET title = :title, slug = :slug, chapo = :chapo, content = :content, author = :author, picture = :picture, modified = NOW()
+            WHERE id = :id
+        ";
         $stmt = $this->database->getConnection()->prepare($sql);
         //Exécution de la requête avec les données du formulaire
         $stmt->execute([
@@ -101,6 +100,7 @@ class PostManager
             ':slug' => $post->getSlug(),
             ':chapo' => $post->getChapo(),
             ':content' => $post->getContent(),
+            ':author' => $post->getAuthor(),
             ':picture' => $post->getPicture(),
             ':id' => $post->getId(),
         ]);
@@ -117,5 +117,23 @@ class PostManager
         $stmt->execute([':id' => $postId]);
     }
 
+    private function hydratePost(array $rows): array
+    {
+        $posts = [];
+
+        foreach ($rows as $row) {
+            $post = new Post();
+            $post->setTitle($row['title']);
+            $post->setChapo($row['chapo']);
+            $post->setContent($row['content']);
+            $post->setAuthor($row['author']);
+            $post->setModified($row['modified']);
+            $post->setId($row['id']);
+
+            $posts[] = $post;
+        }
+
+        return $posts;
+    }
 
 }
