@@ -1,28 +1,25 @@
 <?php
 // Inclure le fichier header.php
-include('header.php'); 
+include ('header.php');
 ?>
 
+        <!-- Formulaire de connexion -->
+        <form action="index.php?action=login" method="post">
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="you@exemple.com" required>
+            </div>
+            <div>
+                <label for="password">Mot de passe:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div>
+                <button type="submit">Se connecter</button>
+            </div>
+        </form>
+        <p>Vous n'avez pas de compte ? <a href="index.php?action=create_account">Créez un compte</a></p>
 
-<h2>Connexion</h2>
-    <form action="" method="post">
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div>
-            <label for="first_name">Prénom:</label>
-            <input type="text" id="first_name" name="first_name" required>
-        </div>
-        <div>
-            <label for="last_name">Nom:</label>
-            <input type="text" id="last_name" name="last_name" required>
-        </div>
-        <div>
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div>
-            <button type="submit">Créer un compte</button>
-        </div>
-    </form>
+        <?php
+// Inclure le fichier header.php
+include ('footer.php');
+?>

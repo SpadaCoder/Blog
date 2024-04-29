@@ -19,31 +19,38 @@ class PostController
         $this->commentManager = new CommentManager();
     }
 
-    public function display()
+    public function displayNumber()
     {
 
-       $posts =  $this->postManager->getPost();
+        $posts = $this->postManager->getPost();
 
         // Envoyer à la vue
         include_once (__DIR__ . '/../../templates/pages/home.php');
+
+        exit();
     }
 
     public function displayAll()
     {
 
-       $posts =  $this->postManager->getPostAll();
+        $posts = $this->postManager->getPostAll();
 
         // Envoyer à la vue
         include_once (__DIR__ . '/../../templates/pages/all_posts.php');
+
+        exit();
     }
 
     public function single($postId)
     {
         $post = $this->postManager->getOneById($postId);
 
-        if(isset($_POST['content']) && "" !== $_POST['content']){
-            $contentClean = $_POST['content'];
-            // Appelez la méthode addComment de CommentManager pour ajouter le commentaire à la base de données
+        // Récupérer les commentaires validés de l'article
+        $comments = $this->commentManager->getValidatedCommentsByPostId($postId);
+
+        if (isset($_POST['content']) && "" !== $_POST['content']) {
+            $contentClean = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
+            // Appeler la méthode addComment de CommentManager pour ajouter le commentaire à la base de données
             $this->commentManager->add($contentClean, $postId);
         }
 
@@ -93,7 +100,7 @@ class PostController
             //Envoyer à la BDD
             $this->postManager->update($post);
 
-            header("Location: index.php?objet=post&action=display&id=" . $postId); 
+            header("Location: index.php?objet=post&action=display&id=" . $postId);
             exit();
         }
     }
@@ -102,7 +109,7 @@ class PostController
     {
         $this->postManager->delete($postId);
 
-        header("Location: index.php?objet=post&action=display"); 
+        header("Location: index.php?objet=post&action=display");
     }
 
     public function hydrate(Post $post, array $postClean): ?Post

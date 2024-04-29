@@ -28,6 +28,9 @@
                 <img src="/../../../public/assets/images/accueil.png" alt="Accueil">
                 <div>Accueil</div>
             </a>
+            <a href="index.php?action=login" class="menu-item">
+                <img src="/../../../public/assets/images/enregistrement.png" alt="Connexion">
+                <div>Connexion</div>
             <a href="dashboard.php" class="menu-item">
                 <img src="/../../../public/assets/images/admin.png" alt="Tableau de bord">
                 <div>Tableau de bord</div>
