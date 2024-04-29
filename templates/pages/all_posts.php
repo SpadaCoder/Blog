@@ -1,9 +1,6 @@
 <?php
 // Inclure le fichier header.php
 include ('header.php');
-
-use App\Controller\PostController;
-
 ?>
 <section id="post">
     <div class="container">

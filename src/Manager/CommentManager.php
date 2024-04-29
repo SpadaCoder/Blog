@@ -13,10 +13,8 @@ private $database;
         $this->database = new Database;
     }
 
-    public function add(array $post, int $postId): void
+    public function add(string $content, int $postId): void
     {
-        //Nettoyer $post
-        $postClean = $post;
         $userId = 1; // TO DO reprendre de la session
         $sql = "
             INSERT INTO comment (post_id, content, user_id, created, modified, moderate) 
@@ -25,7 +23,7 @@ private $database;
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->execute([
             ':post_id' => $postId,
-            ':content' => $postClean['content'],
+            ':content' => $content,
             ':user_id' => $userId,
         ]);
     }
@@ -44,7 +42,7 @@ private $database;
             // Hydrate l'objet Comment avec les données de la base de données
             $comment->setId($row['id']);
             $comment->setContent($row['content']);
-            $comment->setUserId($row['userId']);
+            $comment->setUserId($row['user_id']);
 
             $comments[] = $comment;
         }
