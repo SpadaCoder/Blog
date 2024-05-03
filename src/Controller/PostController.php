@@ -41,7 +41,7 @@ class PostController
         exit();
     }
 
-    public function single($postId)
+    public function display($postId)
     {
         $post = $this->postManager->getOneById($postId);
 
@@ -55,7 +55,7 @@ class PostController
         }
 
         // Envoyer à la vue
-        include_once (__DIR__ . '/../../templates/pages/post.php');
+        include (__DIR__ . '/../../templates/pages/post.php');
 
         exit();
     }

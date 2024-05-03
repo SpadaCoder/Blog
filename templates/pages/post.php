@@ -31,22 +31,24 @@ use App\Controller\PostController;
 <section id="comment">
     <div class="container">
         <div class="display-comment">
-        <h3>Commentaires</h3>
-    <ul>
-        <?php foreach ($comments as $comment): ?>
-            <li><?php echo $comment->getContent(); ?></li>
-        <?php endforeach; ?>
-    </ul>
+            <h3>Commentaires</h3>
+            <ul>
+                <?php foreach ($comments as $comment): ?>
+                    <li><?php echo $comment->getContent(); ?></li>
+                <?php endforeach; ?>
+            </ul>
         </div>
-        <div class="add-comment">
-            <form action="" method="post">
-            <label for="content" class="form-label">Ajouter un commentaire </label>
-            <textarea class="form-control" id="content" name="content" required></textarea>
-                <button type="submit">Poster</button>
-            </form>
-        </div>
-
-
+        <?php if (isset($_SESSION['user'])): ?>
+            <div class="add-comment">
+                <form action="" method="post">
+                    <label for="content" class="form-label">Ajouter un commentaire </label>
+                    <textarea class="form-control" id="content" name="content" required></textarea>
+                    <button type="submit">Poster</button>
+                </form>
+            </div>
+        <?php else: ?>
+            echo 'Veuillez vous connecter pour laisser un commentaire';
+        <?php endif; ?>
     </div>
 </section>
 

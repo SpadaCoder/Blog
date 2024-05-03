@@ -24,7 +24,7 @@
 
     <nav>
         <div class="menu">
-            <a href="index.php?objet=post&action=display" class="menu-item">
+            <a href="index.php?" class="menu-item">
                 <img src="/../../../public/assets/images/accueil.png" alt="Accueil">
                 <div>Accueil</div>
             </a>

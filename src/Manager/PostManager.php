@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Post;
+
 use App\Core\Database;
 
 class PostManager

@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
+
 use App\Manager\UserManager;
+use App\Entity\User;
 
 class LoginController
 {
@@ -12,28 +14,32 @@ class LoginController
 
     public function login()
     {
-        // Vérifier si le formulaire a été soumis
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Récupérer les données du formulaire
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $first_name = $_POST['$first_name'];
-            $last_name = $_POST['last_name'];
-
-            // Effectuer les vérifications nécessaires
-            if ($this->isValidUser($email, $password)) {
-                // L'utilisateur est valide, redirection vers la page d'accueil
-                header("Location: index.php?objet=post&action=display");
-                exit();
-            } else {
-                // L'utilisateur n'est pas valide, affichez un message d'erreur par exemple
-                echo "Identifiants incorrects. Veuillez réessayer.";
+        if (isset($_SESSION['user'])) {
+            include_once (__DIR__ . '/../../templates/pages/logout.php');
+        } else {
+            // Vérifier si le formulaire a été soumis
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                // Récupérer les données du formulaire
+                $email = $_POST['email'];
+                $password = $_POST['password'];
+                // Effectuer les vérifications nécessaires
+                $user = $this->userManager->isValidUser($email, $password);
+                if ($user !== false) {
+                    // L'utilisateur est valide, enregister la session et redirection vers la page d'accueil
+                    $_SESSION['user'] = $user;
+                    unset($_SESSION['user']['password']);
+                    header("Location: index.php?");
+                    exit();
+                } else {
+                    // L'utilisateur n'est pas valide, affichez un message d'erreur par exemple
+                    echo "Identifiants incorrects. Veuillez réessayer.";
+                }
             }
+            include_once (__DIR__ . '/../../templates/pages/login.php');
         }
-        include_once (__DIR__ . '/../../templates/pages/login.php');
     }
 
-    public function createAccount() 
+    public function createAccount()
     {
         include_once (__DIR__ . '/../../templates/pages/registration.php');
 
@@ -43,10 +49,18 @@ class LoginController
 
             // Créer un nouveau compte utilisateur
             $this->userManager->createUser($userData);
+
+            header("Location: index.php?");
         }
     }
 
-    private function isValidUser($email, $password)
+    public function logout()
     {
+        //Détruire les données de la session
+        session_unset();
+        session_destroy();
+        // Redirige vers une page après la déconnexion
+        header("Location: index.php");
+        exit();
     }
 }
