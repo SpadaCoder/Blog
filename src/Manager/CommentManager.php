@@ -15,7 +15,7 @@ private $database;
 
     public function add(string $content, int $postId): void
     {
-        $userId = 1; // TO DO reprendre de la session
+        $userId = $_SESSION['user']['id']; 
         $sql = "
             INSERT INTO comment (post_id, content, user_id, created, modified, moderate) 
             VALUES (:post_id, :content, :user_id, NOW(), NOW(), false)

@@ -1,7 +1,7 @@
 <?php
 // Inclure le fichier header.php
 include ('header.php');
-?>
+    ?>
 
         <!-- Formulaire de connexion -->
         <form action="index.php?action=login" method="post">

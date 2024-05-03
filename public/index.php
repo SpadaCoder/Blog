@@ -9,6 +9,8 @@ spl_autoload_register(function ($class) {
     require_once $classFile;
 });
 
+session_start();
+
 // Vérifier l'action demandée
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
@@ -20,8 +22,20 @@ if (isset($_GET['action'])) {
         case 'login':
             $loginController->login();
             break;
-        }
+        case 'logout':
+            $loginController->logout();
+            break;
     }
+}
+
+// Vérifier si aucun objet n'est spécifié
+if (!isset($_GET['objet']) && !isset($_GET['action'])) {
+    // Créer une instance de PostController
+    $postController = new PostController();
+    // Appeler la méthode displayNumber par défaut
+    $postController->displayNumber();
+}
+
 // si objet = post 
 if (isset($_GET['objet']) && 'post' === $_GET['objet']) {
     //Appel controleur affiche tous les posts
@@ -33,10 +47,8 @@ if (isset($_GET['objet']) && 'post' === $_GET['objet']) {
     ) {
         // si id        
         if (isset($_GET['id'])) {
-            $postController->single($_GET['id']);
+            $postController->display($_GET['id']);
         }
-
-        $postController->displayNumber();
     }
     //si action = displayAll
     if (
@@ -60,8 +72,7 @@ if (isset($_GET['objet']) && 'post' === $_GET['objet']) {
     if (
         isset($_GET['action']) &&
         'update' === $_GET['action'] &&
-        isset($_GET['id']) &&
-        is_int($_GET['id'])
+        isset($_GET['id'])
     ) {
         $postController->update($_GET['id']);
     }
@@ -70,8 +81,7 @@ if (isset($_GET['objet']) && 'post' === $_GET['objet']) {
     if (
         isset($_GET['action']) &&
         'delete' === $_GET['action'] &&
-        isset($_GET['id']) &&
-        is_int($_GET['id'])
+        isset($_GET['id'])
     ) {
         $postController->delete($_GET['id']);
     }
