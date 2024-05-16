@@ -7,6 +7,7 @@ use App\Core\Database;
 use App\Manager\PostManager;
 use App\Entity\Comment;
 use App\Manager\CommentManager;
+use App\Controller\LoginController;
 
 class PostController
 {
@@ -17,6 +18,7 @@ class PostController
     {
         $this->postManager = new PostManager();
         $this->commentManager = new CommentManager();
+
     }
 
     public function displayNumber()
@@ -62,7 +64,8 @@ class PostController
 
 
     public function add()
-    {
+    {//vérifie si admin
+
         // Afficher le formulaire
         include_once (__DIR__ . '/../../templates/pages/create_post.php');
 
@@ -126,4 +129,5 @@ class PostController
 
         return $post;
     }
+
 }

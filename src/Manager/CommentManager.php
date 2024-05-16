@@ -4,10 +4,11 @@ namespace App\Manager;
 
 use App\Entity\Comment;
 use App\Core\Database;
+use App\Entity\User;
 
 class CommentManager
 {
-private $database;
+    private $database;
     public function __construct()
     {
         $this->database = new Database;
@@ -15,7 +16,7 @@ private $database;
 
     public function add(string $content, int $postId): void
     {
-        $userId = $_SESSION['user']['id']; 
+        $userId = $_SESSION['user']['id'];
         $sql = "
             INSERT INTO comment (post_id, content, user_id, created, modified, moderate) 
             VALUES (:post_id, :content, :user_id, NOW(), NOW(), false)
@@ -48,6 +49,39 @@ private $database;
         }
 
         return $comments;
+    }
+
+    public function getCommentsToApprove()
+    {
+        // Requête pour récupérer les commentaires non validés
+        $sql = "
+            SELECT comment.*, CONCAT(user.first_name, ' ', user.last_name) AS author
+            FROM comment
+            INNER JOIN user ON comment.user_id = user.id
+            WHERE moderate = 0
+        ";
+        $stmt = $this->database->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        // Récupérer le résultat 
+        $result = $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Entity\Comment");
+
+        return $result;
+    }
+    public function validateComments($id)
+    {
+        // Valider les commentaires en mettant moderate à 1
+        $sql = "UPDATE comment SET moderate = 1 WHERE id IN (" . implode(',', $id) . ")";
+        $stmt = $this->database->getConnection()->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function deleteComments($id)
+    {
+        // Supprimer les commentaires de la table
+        $sql = "DELETE FROM comment WHERE id IN (" . implode(',', $id) . ")";
+        $stmt = $this->database->getConnection()->prepare($sql);
+        $stmt->execute();
     }
 }
 

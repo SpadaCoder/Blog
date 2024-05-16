@@ -63,4 +63,13 @@ class LoginController
         header("Location: index.php");
         exit();
     }
+    
+    public function isAdmin(): bool {
+        // Vérifie si l'utilisateur est authentifié et est administrateur
+        if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -1,15 +1,14 @@
-<?php
-// Inclure le fichier header.php
-include('header.php'); 
-?>
+<?php $title = "Mon Blog - Mes créations"; ?>
+<?php ob_start(); ?>
 
-    <div class="alert alert-success" role="alert">
-<?php if (isset($_SESSION['user'])): ?>
-        Bonjour <?php echo $_SESSION['user']['first_name']; ?> et bienvenue sur le site !
-<?php else: ?>
+<div class="alert alert-success" role="alert">
+    <?php if (isset($_SESSION['user'])): ?>
+        Bonjour <?php echo $_SESSION['user']['first_name']; ?> et bienvenue sur le site !
+    <?php else: ?>
         Bienvenue sur le site !
     <?php endif; ?>
-    </div>
+    
+</div>
 <section id="post">
     <div class="container">
         <?php foreach ($posts as $post) {
@@ -26,7 +25,7 @@ include('header.php');
         <h2>Contactez-moi</h2>
         <form action="process_contact.php" method="post">
             <label for="nom_prenom">Nom et Prénom :</label>
-            <input type="text" class="form-control name="nom_prenom" required>
+            <input type="text" class="form-control name=" nom_prenom" required>
 
             <label for="email">E-mail de contact :</label>
             <input type="email" class="form-control" name="email" required>
@@ -42,11 +41,13 @@ include('header.php');
 <section id="cv">
     <div class="container">
         <h2>Mon CV</h2>
-        <p>Téléchargez mon CV au format PDF : <a href="/../../../public/assets/fichiers/cv.pdf" target="_blank">CV.pdf</a></p>
+        <p>Téléchargez mon CV au format PDF : <a href="/../../../public/assets/fichiers/cv.pdf"
+                target="_blank">CV.pdf</a></p>
     </div>
 </section>
 
-<?php
-// Inclure le fichier header.php
-include('footer.php'); 
+<?php $content = ob_get_clean();
+
+// Inclure le fichier layout.php
+require ('layout.php');
 ?>

@@ -1,10 +1,6 @@
-<?php
-// Inclure le fichier header.php
-include ('header.php');
+<?php $title = "SpadaCoder - Article"; ?>
+<?php ob_start(); ?>
 
-use App\Controller\PostController;
-
-?>
 <section id="post">
     <div class="container">
         <div class="post-all">
@@ -47,12 +43,13 @@ use App\Controller\PostController;
                 </form>
             </div>
         <?php else: ?>
-            echo 'Veuillez vous connecter pour laisser un commentaire';
+           <p>Veuillez vous connecter pour laisser un commentaire</p>
         <?php endif; ?>
     </div>
 </section>
 
-<?php
-// Inclure le fichier header.php
-include ('footer.php');
+<?php $content = ob_get_clean();
+
+// Inclure le fichier layout.php
+require ('layout.php');
 ?>

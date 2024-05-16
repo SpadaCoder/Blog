@@ -1,7 +1,6 @@
-<?php
-// Inclure le fichier header.php
-include ('header.php');
-?>
+<?php $title = "SpadaCoder - Tous les articles"; ?>
+<?php ob_start(); ?>
+
 <section id="post">
     <div class="container">
     <?php foreach ($posts as $post) {
@@ -11,7 +10,8 @@ include ('header.php');
     </div>
 </section>
 
-<?php
-// Inclure le fichier header.php
-include ('footer.php');
+<?php $content = ob_get_clean();
+
+// Inclure le fichier layout.php
+require ('layout.php');
 ?>

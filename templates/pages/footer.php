@@ -9,6 +9,3 @@
         <p>&copy; 2024 Spadacini Sandra - Tous droits réservés</p>
     </div>
 </footer>
-
-</body>
-</html>
