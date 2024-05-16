@@ -1,7 +1,6 @@
-<?php
-// Inclure le fichier header.php
-include('header.php'); 
-?>
+<?php $title = "SpadaCoder - Nouvel article"; ?>
+<?php ob_start(); ?>
+
 
 <body>
 
@@ -34,7 +33,8 @@ include('header.php');
     </section>
 </body>
 
-<?php
-// Inclure le fichier header.php
-include('footer.php'); 
+<?php $content = ob_get_clean();
+
+// Inclure le fichier layout.php
+require ('layout.php');
 ?>

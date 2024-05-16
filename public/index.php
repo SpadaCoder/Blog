@@ -2,6 +2,7 @@
 
 use App\Controller\PostController;
 use App\Controller\LoginController;
+use App\Controller\CommentController;
 
 // autoload des classes
 spl_autoload_register(function ($class) {
@@ -13,9 +14,9 @@ session_start();
 
 // Vérifier l'action demandée
 if (isset($_GET['action'])) {
-    $action = $_GET['action'];
     $loginController = new LoginController();
-    switch ($action) {
+    $commentController = new CommentController();
+    switch ($_GET['action']) {
         case 'create_account':
             $loginController->createAccount();
             break;
@@ -25,31 +26,50 @@ if (isset($_GET['action'])) {
         case 'logout':
             $loginController->logout();
             break;
+        case 'admin':
+            $commentController->displayCommentsToApprove();
+            break;
     }
+    if (
+        isset($_GET['objet']) && 'post' === $_GET['objet'] &&
+        isset($_GET['id'])
+    ) {
+        $postController = new PostController();
+        switch ($_GET['action']) {
+            case 'display':
+                $postController->display($_GET['id']);
+                break;
+            case 'update':
+                $postController->update($_GET['id']);
+                break;
+            case 'delete':
+                $postController->delete($_GET['id']);
+                break;
+        }
+    }
+    if (
+        isset($_GET['objet']) && 'post' === $_GET['objet']
+    ) {
+        $postController = new PostController();
+        switch ($_GET['action']) {
+            case 'displayAll':
+                $postController->displayAll();
+                break;
+            case 'add':
+                $postController->add();
+                break;
+        }
+    }
+
 }
 
-// Vérifier si aucun objet n'est spécifié
-if (!isset($_GET['objet']) && !isset($_GET['action'])) {
-    // Créer une instance de PostController
-    $postController = new PostController();
-    // Appeler la méthode displayNumber par défaut
-    $postController->displayNumber();
-}
 
-// si objet = post 
+
+/* // si objet = post 
 if (isset($_GET['objet']) && 'post' === $_GET['objet']) {
     //Appel controleur affiche tous les posts
     $postController = new PostController();
-    // si action = display
-    if (
-        isset($_GET['action']) &&
-        'display' === $_GET['action']
-    ) {
-        // si id        
-        if (isset($_GET['id'])) {
-            $postController->display($_GET['id']);
-        }
-    }
+
     //si action = displayAll
     if (
         isset($_GET['action']) &&
@@ -67,22 +87,30 @@ if (isset($_GET['objet']) && 'post' === $_GET['objet']) {
         // Appel controleur ajout post
         $postController->add();
     }
-
+ */
     // si action = update
-    if (
+/*     if (
         isset($_GET['action']) &&
         'update' === $_GET['action'] &&
         isset($_GET['id'])
     ) {
         $postController->update($_GET['id']);
-    }
+    } */
 
     //si action = delete
-    if (
+/*     if (
         isset($_GET['action']) &&
         'delete' === $_GET['action'] &&
         isset($_GET['id'])
     ) {
         $postController->delete($_GET['id']);
-    }
+    } */
+
+/* } */
+// Vérifier si aucun objet n'est spécifié
+if (!isset($_GET['objet']) && !isset($_GET['action'])) {
+    // Créer une instance de PostController
+    $postController = new PostController();
+    // Appeler la méthode displayNumber par défaut
+    $postController->displayNumber();
 }
