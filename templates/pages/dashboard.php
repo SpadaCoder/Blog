@@ -1,9 +1,4 @@
 <?php $title = "SpadaCoder - Tableau de bord"; ?>
-<?php if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin'):
-    $error_message = "Vous n'avez pas les autorisations nécessaires pour accéder à cette page veuillez vous connecter en tant qu'admin";
-    include ('error.php');
-    ?>
-<?php else: ?>
 
     <?php ob_start(); ?>
     <section class="container-dashboard">
@@ -49,4 +44,3 @@
 // Inclure le fichier layout.php
 require ('layout.php');
 ?>
-<?php endif; ?>
