@@ -23,9 +23,9 @@
 <section id="contact">
     <div class="container">
         <h2>Contactez-moi</h2>
-        <form action="process_contact.php" method="post">
+        <form action="index.php?action=contact" method="post">
             <label for="nom_prenom">Nom et Prénom :</label>
-            <input type="text" class="form-control name=" nom_prenom" required>
+            <input type="text" class="form-control" name="nom_prenom" required>
 
             <label for="email">E-mail de contact :</label>
             <input type="email" class="form-control" name="email" required>
@@ -41,8 +41,10 @@
 <section id="cv">
     <div class="container">
         <h2>Mon CV</h2>
-        <p>Téléchargez mon CV au format PDF : <a href="/../../../public/assets/fichiers/cv.pdf"
-                target="_blank">CV.pdf</a></p>
+        <p>Téléchargez mon CV au format PDF :</p>
+        <a href="/../../../public/assets/fichiers/cv.pdf" target="_blank">
+        <img src="/../../../public/assets/images/cv-thumbnail.jpg" alt="CV">
+        </a>
     </div>
 </section>
 

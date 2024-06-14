@@ -19,7 +19,7 @@
         <a href="index.php?action=login" class="menu-item">
             <img src="/../../../public/assets/images/enregistrement.png" alt="Connexion">
             <div>Connexion</div>
-            <a href="index.php?action=admin" class="menu-item">
+            <a href="index.php?role=admin&action=approvecomments" class="menu-item">
                 <img src="/../../../public/assets/images/admin.png" alt="Tableau de bord">
                 <div>Tableau de bord</div>
             </a>

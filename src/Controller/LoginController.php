@@ -7,6 +7,10 @@ use App\Entity\User;
 class LoginController
 {
     private $userManager;
+    private $error_message = [
+        'not_logged_in' => "Vous devez être connecté pour accéder à cette page.",
+        'not_admin' => "Les droits administrateurs sont requis pour accéder à cette page."
+    ];
     public function __construct()
     {
         $this->userManager = new UserManager();
@@ -37,6 +41,7 @@ class LoginController
             }
             include_once (__DIR__ . '/../../templates/pages/login.php');
         }
+        exit();
     }
 
     public function createAccount()
@@ -62,14 +67,5 @@ class LoginController
         // Redirige vers une page après la déconnexion
         header("Location: index.php");
         exit();
-    }
-    
-    public function isAdmin(): bool {
-        // Vérifie si l'utilisateur est authentifié et est administrateur
-        if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

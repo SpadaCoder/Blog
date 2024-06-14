@@ -1,8 +1,10 @@
-<?php $title = "SpadaCoder - Erreur de page"; ?>
+<?php $title = "SpadaCoder - Erreur de page"; 
+?>
+
 <?php ob_start(); ?>
 
 <h1>Erreur de page</h1>
-<p><?php echo $error_message; ?></p>
+<p><?= htmlspecialchars($error_message) ?></p>
 
 <?php $content = ob_get_clean();
 
