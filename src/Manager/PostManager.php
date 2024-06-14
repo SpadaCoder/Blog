@@ -83,11 +83,17 @@ class PostManager
         // Récupérer le résultat 
         $result = $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Entity\Post");
 
+        // Vérifier si un post a été trouvé
+        if (count($result) === 0) {
+            return null;
+        }
+
         return $result[0];
     }
 
     public function update(Post $post): void
     {
+        
         // Requête de modification
         $sql = "
             UPDATE post

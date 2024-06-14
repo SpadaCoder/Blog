@@ -47,6 +47,10 @@ class PostController
     {
         $post = $this->postManager->getOneById($postId);
 
+        // Vérifier si le post existe
+        if ($post === null) {
+            throw new \Exception("Le post avec l'ID $postId n'existe pas.");
+        }
         // Récupérer les commentaires validés de l'article
         $comments = $this->commentManager->getValidatedCommentsByPostId($postId);
 
@@ -64,10 +68,9 @@ class PostController
 
 
     public function add()
-    {//vérifie si admin
-
+    {
         // Afficher le formulaire
-        include_once (__DIR__ . '/../../templates/pages/create_post.php');
+        include_once (__DIR__ . '/../../templates/posts/create_post.php');
 
         // Vérifier si le formulaire a été soumis
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -86,6 +89,12 @@ class PostController
     public function update($postId)
     {
         $post = $this->postManager->getOneById($postId);
+
+        // Vérifier si le post existe
+        if ($post === null) {
+            throw new \Exception("Le post avec l'ID $postId n'existe pas.");
+        }
+
         // Vérifier si GET
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
             // Afficher le formulaire
@@ -94,8 +103,7 @@ class PostController
 
         // Vérifier si le formulaire a été soumis
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            //Récupérer les données utilisateur
-            //Nettoyer les données
+            //Récupérer et nettoyer les données utilisateur
             $postClean = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
             //Hydrater notre objet
             $post = $this->hydrate($post, $postClean);
@@ -110,6 +118,13 @@ class PostController
 
     public function delete($postId)
     {
+        $post = $this->postManager->getOneById($postId);
+
+        // Vérifier si le post existe
+        if ($post === null) {
+            throw new \Exception("Le post avec l'ID $postId n'existe pas.");
+        }
+        //Supprimer le post
         $this->postManager->delete($postId);
 
         header("Location: index.php?objet=post&action=display");

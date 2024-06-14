@@ -5,8 +5,8 @@
     <div class="post-options">
         <a href="index.php?objet=post&action=display&id=<?php echo $post->getId(); ?>">Voir l'article</a>
         <?php if (isset($_SESSION['user']) && $_SESSION['user']['role']==='admin'): ?>
-            <a href="index.php?objet=post&action=update&id=<?php echo $post->getId(); ?>">Modifier l'article</a>
-            <a href="index.php?objet=post&action=delete&id=<?php echo $post->getId(); ?>">Supprimer l'article</a>
+            <a href="index.php?objet=post&action=update&role=admin&id=<?php echo $post->getId(); ?>">Modifier l'article</a>
+            <a href="index.php?objet=post&action=delete&role=admin&id=<?php echo $post->getId(); ?>">Supprimer l'article</a>
         <?php endif; ?>
     </div>
 </article>

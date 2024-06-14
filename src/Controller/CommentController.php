@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Manager\CommentManager;
+use App\Controller\LoginController;
+
 
 class CommentController
 {
@@ -41,6 +43,7 @@ class CommentController
                 $this->CommentAction($action, $id);
             }
         }
+        exit();
     }
 
     public function CommentAction($action, $id)

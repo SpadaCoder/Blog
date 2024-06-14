@@ -50,6 +50,17 @@ class Comment
         return $this;
     }
 
+    public function getCreated(): string
+    {
+        return $this->created;
+    }
+    public function setCreated(string $created): self
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
     public function getModified(): string
     {
         return $this->modified;

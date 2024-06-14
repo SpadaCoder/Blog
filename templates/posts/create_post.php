@@ -1,7 +1,5 @@
 <?php $title = "SpadaCoder - Nouvel article"; ?>
 <?php ob_start(); ?>
-
-
 <body>
 
 <section id="create-post">
@@ -32,9 +30,8 @@
     </div>
     </section>
 </body>
-
 <?php $content = ob_get_clean();
 
 // Inclure le fichier layout.php
-require ('layout.php');
+require (__DIR__ . '/../pages/layout.php');
 ?>

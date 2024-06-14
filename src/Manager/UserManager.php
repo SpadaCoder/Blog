@@ -47,4 +47,14 @@ class UserManager
             
         return false;
     }
+
+    public function getAdminEmails()
+    {
+        $sql = "SELECT email FROM user WHERE role = 'admin'";
+        $stmt = $this->database->getConnection()->prepare($sql);
+        $stmt->execute();
+        $adminEmails = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        return $adminEmails;
+    }
+
 }
