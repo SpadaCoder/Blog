@@ -23,7 +23,7 @@
 <section id="contact">
     <div class="container">
         <h2>Contactez-moi</h2>
-        <form action="index.php?action=contact" method="post">
+        <form action="index.php?action=mailto" method="post">
             <label for="nom_prenom">Nom et Prénom :</label>
             <input type="text" class="form-control" name="nom_prenom" required>
 

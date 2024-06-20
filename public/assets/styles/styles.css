@@ -1,5 +1,5 @@
 body {
-    font-family: 'Quicksand', sans-serif;
+    font-family: "Quicksand", sans-serif;
 }
 
 p {
@@ -8,7 +8,7 @@ p {
 
 h1,
 h2 {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 1.8em;
 }
 
@@ -57,11 +57,11 @@ h2 {
     margin-top: 5px;
 }
 
-/*Post*/
+/* Post */
 #post {
     background-color: #6A4873;
-    color: #FFFFFF;
-    padding: 30px 20px 10px 20px;
+    color: #FFF;
+    padding: 30px 20px 10px;
 }
 
 .post-chapo,
@@ -173,7 +173,8 @@ label {
     margin: 0 auto;
     margin-bottom: 15px;
 }
-/*CV*/
+
+/* CV */
 #cv {
     text-align: center;
     margin-bottom: 20px;
@@ -183,7 +184,7 @@ label {
     width: 100px; 
 }
 
-/*Footer*/
+/* Footer */
 footer {
     background-color: #EAD1F8;
     color: #6A4873;
@@ -214,7 +215,7 @@ footer {
     font-size: 0.8em;
 }
 
-/*Dashboard*/
+/* Dashboard */
 .container-dashboard {
     display: flex;
     flex-wrap: wrap;
@@ -382,6 +383,7 @@ tr:hover {
     .devise {
         font-size: 10px; /* Réduire la taille du texte */
     }
+
     body {
         font-size: 12px;
     }
@@ -408,6 +410,7 @@ tr:hover {
         width: 100px;
         height: auto;
     }
+
     .dashboard-btn-container button {
         padding: 8px 16px;
         font-size: 14px;

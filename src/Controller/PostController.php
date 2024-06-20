@@ -11,15 +11,21 @@ use App\Controller\LoginController;
 
 class PostController
 {
+
     private $postManager;
+
     private $commentManager;
+
 
     public function __construct()
     {
+        // Création d'un nouveau CommentManager et PostManager.
         $this->postManager = new PostManager();
         $this->commentManager = new CommentManager();
 
+        // End_construct().
     }
+
 
     public function displayNumber()
     {
@@ -27,9 +33,10 @@ class PostController
         $posts = $this->postManager->getPost();
 
         // Envoyer à la vue
-        include_once (__DIR__ . '/../../templates/pages/home.php');
+        include_once __DIR__ . '/../../templates/pages/home.php';
 
         exit();
+
     }
 
     public function displayAll()
@@ -38,7 +45,7 @@ class PostController
         $posts = $this->postManager->getPostAll();
 
         // Envoyer à la vue
-        include_once (__DIR__ . '/../../templates/pages/all_posts.php');
+        include_once __DIR__ . '/../../templates/pages/all_posts.php';
 
         exit();
     }
@@ -47,21 +54,21 @@ class PostController
     {
         $post = $this->postManager->getOneById($postId);
 
-        // Vérifier si le post existe
+        // Vérifier si le post existe.
         if ($post === null) {
             throw new \Exception("Le post avec l'ID $postId n'existe pas.");
         }
-        // Récupérer les commentaires validés de l'article
+        // Récupérer les commentaires validés de l'article.
         $comments = $this->commentManager->getValidatedCommentsByPostId($postId);
 
-        if (isset($_POST['content']) && "" !== $_POST['content']) {
+        if (!empty($_POST['content']) && isset($_POST['content'])) {
             $contentClean = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
-            // Appeler la méthode addComment de CommentManager pour ajouter le commentaire à la base de données
+            // Appeler la méthode addComment de CommentManager pour ajouter le commentaire à la base de données.
             $this->commentManager->add($contentClean, $postId);
         }
 
-        // Envoyer à la vue
-        include (__DIR__ . '/../../templates/pages/post.php');
+        // Envoyer à la vue.
+        include __DIR__ . '/../../templates/pages/post.php';
 
         exit();
     }
@@ -69,18 +76,18 @@ class PostController
 
     public function add()
     {
-        // Afficher le formulaire
-        include_once (__DIR__ . '/../../templates/posts/create_post.php');
+        // Afficher le formulaire.
+        include_once __DIR__ . '/../../templates/posts/create_post.php';
 
-        // Vérifier si le formulaire a été soumis
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Vérifier si le formulaire a été soumis.
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $postClean = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            // Hydrater un nouvel objet Post avec les données du formulaire
+            // Hydrater un nouvel objet Post avec les données du formulaire.
             $post = new Post();
             $this->hydrate($post, $postClean);
-            //Envoyer à la BDD
+            // Envoyer à la BDD.
             $this->postManager->create($post);
-
+            // Redirige vers la page qui affiche l'article
             header("Location: index.php?objet=post&action=display");
             exit();
         }
@@ -90,25 +97,26 @@ class PostController
     {
         $post = $this->postManager->getOneById($postId);
 
-        // Vérifier si le post existe
+        // Vérifier si le post existe.
         if ($post === null) {
-            throw new \Exception("Le post avec l'ID $postId n'existe pas.");
+            $errorMessage = htmlspecialchars("Le post avec l'ID $postId n'existe pas.");
+            throw new \Exception($errorMessage);
         }
 
         // Vérifier si GET
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
-            // Afficher le formulaire
-            include_once (__DIR__ . '/../../templates/pages/update_post.php');
+            // Afficher le formulaire.
+            include_once __DIR__ . '/../../templates/pages/update_post.php';
         }
 
-        // Vérifier si le formulaire a été soumis
+        // Vérifier si le formulaire a été soumis.
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            //Récupérer et nettoyer les données utilisateur
+            //Récupérer et nettoyer les données utilisateur.
             $postClean = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            //Hydrater notre objet
+            //Hydrater notre objet.
             $post = $this->hydrate($post, $postClean);
 
-            //Envoyer à la BDD
+            //Envoyer à la BDD.
             $this->postManager->update($post);
 
             header("Location: index.php?objet=post&action=display&id=" . $postId);
@@ -144,5 +152,4 @@ class PostController
 
         return $post;
     }
-
 }
