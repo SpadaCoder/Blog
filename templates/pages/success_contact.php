@@ -1,4 +1,4 @@
-<?php $title = "SpadaCoder - Message encoyé"; ?>
+<?php $title = "SpadaCoder - Message envoyé"; ?>
 <?php ob_start(); ?>
 
 <h1>Merci pour votre message !</h1>

@@ -76,11 +76,17 @@ class Comment
     {
         return $this->id;
     }
-    public function setId(string $id): self
+    public function getModerate(string $moderate): self
     {
-        $this->id = $id;
+        $this->moderate = $moderate;
 
         return $this;
     }
 
+    public function setModerate(string $moderate): self
+    {
+        $this->moderate = $moderate;
+
+        return $this;
+    }
 }
