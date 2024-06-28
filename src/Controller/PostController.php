@@ -16,8 +16,8 @@ class PostController
 
     private $commentManager;
     private $postClean;
-    
-    
+
+
     public function __construct()
     {
         // Filtrer les données POST et les stocker dans une propriété.
@@ -31,7 +31,7 @@ class PostController
     }
 
 
-    public function displayNumber()
+    public function displayLastPosts(array $sessionClean)
     {
 
         $posts = $this->postManager->getPost();
@@ -43,7 +43,7 @@ class PostController
 
     }
 
-    public function displayAll()
+    public function displayAll(array $sessionClean)
     {
 
         $posts = $this->postManager->getPostAll();
@@ -54,7 +54,7 @@ class PostController
         exit();
     }
 
-    public function display($postId)
+    public function displayPost(int $postId, array $sessionClean)
     {
         $post = $this->postManager->getOneById($postId);
 
@@ -68,7 +68,7 @@ class PostController
         if (!empty($this->postClean['content']) && isset($this->postClean['content'])) {
             $contentClean = filter_input(INPUT_POST, 'content');
             // Appeler la méthode addComment de CommentManager pour ajouter le commentaire à la base de données.
-            $this->commentManager->add($contentClean, $postId);
+            $this->commentManager->add($contentClean, $postId, $sessionClean);
         }
 
         // Envoyer à la vue.
@@ -78,30 +78,33 @@ class PostController
     }
 
 
-    public function add()
+    public function add(array $sessionClean)
     {
         // Afficher le formulaire.
         include_once __DIR__ . '/../../templates/posts/create_post.php';
-        
+
         // Vérifier si le formulaire a été soumis.
         if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
             $postClean = filter_input_array(INPUT_POST);
             // Hydrater un nouvel objet Post avec les données du formulaire.
             $post = new Post();
             $this->hydrate($post, $postClean);
-            //Récupération de la session pour userID et first_name
-            $userId = $_SESSION['userId'] ?? null;
-            $firstName = $_SESSION['first_name'] ?? 'Auteur inconnu';
+            // Récupérer l'ID et le prénom de l'utilisateur depuis la session
+            if (!isset($sessionClean['user'])) {
+                throw new \Exception("L'utilisateur n'est pas connecté."); // Gérer le cas où l'utilisateur n'est pas connecté
+            }
+            $userId = $sessionClean['userId'] ?? null;
+            $author = $sessionClean['first_name'] ?? 'Auteur inconnu';
 
             // Envoyer à la BDD.
-           $this->postManager->create($post);
+            $this->postManager->create($post, $userId, $author);
             // Redirige vers la page qui affiche l'article
             header("Location: index.php?objet=post&action=display");
             exit();
         }
     }
 
-    public function update($postId)
+    public function update(int $postId)
     {
         $post = $this->postManager->getOneById($postId);
 
@@ -131,7 +134,7 @@ class PostController
         }
     }
 
-    public function delete($postId)
+    public function delete(int $postId)
     {
         $post = $this->postManager->getOneById($postId);
 
@@ -155,11 +158,11 @@ class PostController
         $post->setChapo($postClean['chapo']);
         $post->setContent($postClean['content']);
         $post->setPicture($postClean['picture']);
-    
-    // Vérifier si 'author' existe dans $postClean avant de l'hydrater
-    if (isset($postClean['author'])) {
-        $post->setAuthor($postClean['author']);
-    }
+
+        // Vérifier si 'author' existe dans $postClean avant de l'hydrater
+        if (isset($postClean['author'])) {
+            $post->setAuthor($postClean['author']);
+        }
 
         return $post;
     }

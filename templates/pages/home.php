@@ -2,8 +2,8 @@
 <?php ob_start(); ?>
 
 <div class="alert alert-success" role="alert">
-    <?php if (isset($_SESSION['user'])): ?>
-        Bonjour <?php echo $_SESSION['user']['first_name']; ?> et bienvenue sur le site !
+    <?php if (isset($sessionClean['user'])): ?>
+        Bonjour <?php echo $sessionClean['user']['first_name']; ?> et bienvenue sur le site !
     <?php else: ?>
         Bienvenue sur le site !
     <?php endif; ?>

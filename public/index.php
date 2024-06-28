@@ -16,11 +16,13 @@ spl_autoload_register(function ($class) {
 
 session_start();
 
+$loginController = new LoginController();
+$sessionClean = $loginController->cleanSession($_SESSION);
+
 try {
     $getClean = filter_input_array(INPUT_GET);
     // Vérifier l'action demandée.
     if (isset($getClean['action']) === true) {
-        $loginController = new LoginController();
         $commentController = new CommentController();
         $postController = new PostController();
         $userManager = new UserManager();
@@ -32,7 +34,7 @@ try {
 
         // Login.
         if ('login' === $getClean['action']) {
-            $loginController->login();
+            $loginController->login($sessionClean);
         }
 
         // Logout.
@@ -51,12 +53,12 @@ try {
         if (isset($getClean['objet']) === TRUE && 'post' === $getClean['objet']) {
             // Tous les Posts.
             if ('displayAll' === $getClean['action']) {
-                $postController->displayAll();
+                $postController->displayAll($sessionClean);
             }
             // Affichage d'un Post avec son id.
             if (isset($getClean['id'])) {
                 if ('display' === $getClean['action']) {
-                    $postController->display($getClean['id']);
+                    $postController->displayPost($getClean['id'], $sessionClean);
                 }
             }
         }
@@ -64,13 +66,13 @@ try {
         // Administration.
         if (isset($getClean['role']) && 'admin' === $getClean['role']) {
             //Approbation des commentaires.
-            if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
+            if (isset($sessionClean['user']) && $sessionClean['user']['role'] === 'admin') {
                 if ('approvecomments' === $getClean['action']) {
                     $commentController->displayCommentsToApprove();
                 }
                 // Ajout d'un Post.
                 if ('add' === $getClean['action'] && isset($getClean['objet']) && 'post' === $getClean['objet']) {
-                    $postController->add();
+                    $postController->add($sessionClean);
                 }
                 // Action sur Post existant.
                 if (isset($getClean['objet']) && 'post' === $getClean['objet'] && isset($getClean['id'])) {
@@ -90,7 +92,7 @@ try {
                 exit;
             }
         } else {
-            $postController->displayNumber();
+            $postController->displayLastPosts($sessionClean);
         }
         // end if
     }
@@ -100,7 +102,7 @@ try {
         // Créer une instance de PostController.
         $postController = new PostController();
         // Appeler la méthode displayNumber par défaut.
-        $postController->displayNumber();
+        $postController->displayLastPosts($sessionClean);
     }
 } catch (\Exception $e) {
     // Gérer toutes les autres exceptions.

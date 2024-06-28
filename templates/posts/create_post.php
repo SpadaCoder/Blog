@@ -21,10 +21,6 @@
                 <label for="content" class="form-label">Contenu de l'article</label>
                 <textarea class="form-control" id="content" name="content" rows = 5 required></textarea><br>
             </div>
-            <div class="picture">
-                <label for="picture" class="form-label">Image</label>
-                <input type="file" class="form-control" id="picture" name="picture">
-            </div>
             <button type="submit" class="btn btn-primary">Créer</button>
         </form>
     </div>

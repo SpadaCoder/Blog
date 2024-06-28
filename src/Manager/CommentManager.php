@@ -14,9 +14,9 @@ class CommentManager
         $this->database = new Database;
     }
 
-    public function add(string $content, int $postId): void
+    public function add(string $content, int $postId, array $sessionClean): void
     {
-        $userId = $_SESSION['user']['id'];
+        $userId =  $sessionClean['user']['id'];
         $sql = "
             INSERT INTO comment (post_id, content, user_id, created, modified, moderate) 
             VALUES (:post_id, :content, :user_id, NOW(), NOW(), false)
