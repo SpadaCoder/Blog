@@ -20,19 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $headers = "From: $email\r\n";
     $headers .= "Reply-To: $email\r\n";
     $headers .= "X-Mailer: PHP/" . phpversion();
-    
-   // $mail = mail($to, $subject, $email_message, $headers);
-   echo "<pre>";
-    var_dump(mail($to, $subject, $email_message, $headers));
-    echo "</pre>";
-die();
-
+   
     // Envoi de l'email
-    if ($mail) {
-        $_SESSION['message'] = 'Merci, votre message a été envoyé.';
-        $_SESSION['message_type'] = 'success';
-    } else {
-        $_SESSION['message'] = 'Désolé, une erreur s\'est produite lors de l\'envoi de votre message. Veuillez réessayer plus tard.';
-        $_SESSION['message_type'] = 'error';
-    }
+    mail($to, $subject, $email_message, $headers);
+
 }

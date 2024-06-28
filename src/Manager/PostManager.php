@@ -51,12 +51,17 @@ class PostManager
 
     public function create($post)
     {
-        //To do récupérer depuis la session
-        $userId = 1;
+        // Récupérer l'ID et le prénom de l'utilisateur depuis la session
+        if (!isset($_SESSION['user'])) {
+            throw new \Exception("L'utilisateur n'est pas connecté."); // Gérer le cas où l'utilisateur n'est pas connecté
+        }
+        $userId = $_SESSION['user']['id'];
+        $author = $_SESSION['user']['first_name'];
+
         // Requête SQL d'insertion
         $sql = "
-            INSERT INTO post (title, slug, chapo, content, picture, created, modified, user_id) 
-            VALUES (:title, :slug, :chapo, :content, :picture, NOW(), NOW(), $userId)
+            INSERT INTO post (title, slug, chapo, content, picture, created, modified, user_id,  author) 
+            VALUES (:title, :slug, :chapo, :content, :picture, NOW(), NOW(), :user_id, :author)
         ";
         $stmt = $this->database->getConnection()->prepare($sql);
 
@@ -67,8 +72,11 @@ class PostManager
             ':chapo' => $post->getChapo(),
             ':content' => $post->getContent(),
             ':picture' => $post->getPicture(),
+            ':user_id' => $userId,
+            ':author' => $author,
         ]);
     }
+
     public function getOneById(int $id): ?Post
     {
         // Requête pour récupérer les détails du post spécifique
@@ -93,7 +101,7 @@ class PostManager
 
     public function update(Post $post): void
     {
-        
+
         // Requête de modification
         $sql = "
             UPDATE post

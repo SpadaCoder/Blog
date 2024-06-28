@@ -6,6 +6,5 @@
 
 <?php $content = ob_get_clean();
 
-// Inclure le fichier layout.php
-require ('layout.php');
-?>
+// Inclure le fichier layout.php.
+require 'layout.php';

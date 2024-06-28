@@ -7,10 +7,14 @@ class ContactController
 {
 
     private $userManager;
+    private $postClean;
 
 
     public function __construct(UserManager $userManager)
     {
+        // Filtrer les données POST et les stocker dans une propriété.
+        $this->postClean = filter_input_array(INPUT_POST);
+
         // Création d'un UserManager.
         $this->userManager = $userManager;
 
@@ -28,9 +32,9 @@ class ContactController
     public function processContactForm()
     {
         // Récupérer et nettoyer les données du formulaire.
-        $nomPrenom = $this->sanitizeInput($_POST['nom_prenom']);
-        $email = $this->sanitizeInput($_POST['email']);
-        $message = $this->sanitizeInput($_POST['message']);
+        $nomPrenom = $this->postClean['nom_prenom'];
+        $email = $this->postClean['email'];
+        $message = $this->postClean['message'];
 
         // Récupérer les adresses e-mail des admins via UserManager.
         $adminEmails = $this->userManager->getAdminEmails();

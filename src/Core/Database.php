@@ -4,9 +4,7 @@ namespace App\Core;
 
 class Database
 {
-
     private $connection;
-
 
     public function __construct()
     {
@@ -19,16 +17,13 @@ class Database
             $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->connection = $pdo;
         } catch (\PDOException $e) {
-            echo "Erreur de connexion : " . $e->getMessage();
+            throw new \Exception("Erreur de connexion : " . $e->getMessage());
         }
-
-        // End__construct()
     }
 
-
+    // Lancement de la connexion.
     public function getConnection()
     {
-        // Lancement de la connexion
         return $this->connection;
     }
 }

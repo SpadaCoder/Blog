@@ -17,68 +17,71 @@ spl_autoload_register(function ($class) {
 session_start();
 
 try {
+    $getClean = filter_input_array(INPUT_GET);
+    $postClean = filter_input_array(INPUT_POST);
     // Vérifier l'action demandée.
-    if (isset($_GET['action']) === TRUE) {
+    if (isset($getClean['action']) === true) {
         $loginController = new LoginController();
         $commentController = new CommentController();
         $postController = new PostController();
         $userManager = new UserManager();
         $contactController = new ContactController($userManager);
         // Création du compte.
-        if ('create_account' === $_GET['action']) {
+        if ('create_account' === $getClean['action']) {
             $loginController->createAccount();
         }
 
         // Login.
-        if ('login' === $_GET['action']) {
+        if ('login' === $getClean['action']) {
             $loginController->login();
         }
 
         // Logout.
-        if ('logout' === $_GET['action']) {
+        if ('logout' === $getClean['action']) {
             $loginController->logout();
         }
 
         // Contact.
-        if ('mailto' === $_GET['action']) {
+        if ('mailto' === $getClean['action']) {
             $contactController = new ContactController($userManager);
             $contactController->processContactForm();
+            exit();
         }
 
         // Affichage des Posts.
-        if (isset($_GET['objet']) === TRUE && 'post' === $_GET['objet']) {
+        if (isset($getClean['objet']) === TRUE && 'post' === $getClean['objet']) {
             // Tous les Posts.
-            if ('displayAll' === $_GET['action']) {
+            if ('displayAll' === $getClean['action']) {
                 $postController->displayAll();
             }
             // Affichage d'un Post avec son id.
-            if (isset($_GET['id'])) {
-                if ('display' === $_GET['action']) {
-                    $postController->display($_GET['id']);
+            if (isset($getClean['id'])) {
+                if ('display' === $getClean['action']) {
+                    $postController->display($getClean['id']);
                 }
             }
         }
 
         // Administration.
-        if (isset($_GET['role']) && 'admin' === $_GET['role']) {
+        if (isset($getClean['role']) && 'admin' === $getClean['role']) {
             //Approbation des commentaires.
             if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin') {
-                if ('approvecomments' === $_GET['action']) {
+                if ('approvecomments' === $getClean['action']) {
                     $commentController->displayCommentsToApprove();
                 }
                 // Ajout d'un Post.
-                if ('add' === $_GET['action'] && isset($_GET['objet']) && 'post' === $_GET['objet']) {
+                if ('add' === $getClean['action'] && isset($getClean['objet']) && 'post' === $getClean['objet']) {
                     $postController->add();
                 }
                 // Action sur Post existant.
-                if (isset($_GET['objet']) && 'post' === $_GET['objet'] && isset($_GET['id'])) {
+                if (isset($getClean['objet']) && 'post' === $getClean['objet'] && isset($getClean['id'])) {
                     // Modification du Post.
-                    if ('update' === $_GET['action']) {
-                        $postController->update($_GET['id']);
+                    if ('update' === $getClean['action']) {
+                        $postController->update($getClean['id']);
                     }
                     // Suppression du Post.
-                    if ('delete' === $_GET['action']) {
-                        $postController->delete($_GET['id']);
+                    if ('delete' === $getClean['action']) {
+                        $postController->delete($getClean['id']);
                     }
                 }
                 // Message d'erreur non admin.
@@ -94,7 +97,7 @@ try {
     }
 
     // Vérifier si aucun objet n'est spécifié.
-    if (!isset($_GET['objet'])) {
+    if (!isset($getClean['objet'])) {
         // Créer une instance de PostController.
         $postController = new PostController();
         // Appeler la méthode displayNumber par défaut.
