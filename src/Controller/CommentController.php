@@ -43,11 +43,11 @@ class CommentController
         include_once __DIR__ . '/../../templates/pages/dashboard.php';
 
         // Récupération de l'action et de l'id du commentaire pour modération.
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
             // Vérifiez si l'action et les commentaires ont été soumis
-            if (isset($_POST["action"]) && isset($_POST["comments"])) {
-                $action = $_POST["action"] ?? null;
-                $commentsIds = $_POST["comments"] ?? null;
+            if (isset($this->postClean["action"]) && isset($this->postClean["comments"])) {
+                $action = $this->postClean["action"] ?? null;
+                $commentsIds = $this->postClean["comments"] ?? null;
 
                 // Vérifiez que $commentsIds est un tableau d'IDs
                 if (!is_array($commentsIds)) {
@@ -56,6 +56,8 @@ class CommentController
 
                 // Appelez la méthode CommentAction du contrôleur
                 $this->CommentAction($action, $commentsIds);
+
+                header("Location: index.php?role=admin&action=approvecomments");
 
             }
         }
