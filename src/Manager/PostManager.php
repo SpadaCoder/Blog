@@ -49,15 +49,8 @@ class PostManager
 
     }
 
-    public function create($post)
+    public function create($post, $userId, $author)
     {
-        // Récupérer l'ID et le prénom de l'utilisateur depuis la session
-        if (!isset($_SESSION['user'])) {
-            throw new \Exception("L'utilisateur n'est pas connecté."); // Gérer le cas où l'utilisateur n'est pas connecté
-        }
-        $userId = $_SESSION['user']['id'];
-        $author = $_SESSION['user']['first_name'];
-
         // Requête SQL d'insertion
         $sql = "
             INSERT INTO post (title, slug, chapo, content, picture, created, modified, user_id,  author) 

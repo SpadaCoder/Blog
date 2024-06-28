@@ -18,7 +18,6 @@ session_start();
 
 try {
     $getClean = filter_input_array(INPUT_GET);
-    $postClean = filter_input_array(INPUT_POST);
     // Vérifier l'action demandée.
     if (isset($getClean['action']) === true) {
         $loginController = new LoginController();

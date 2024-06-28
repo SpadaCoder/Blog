@@ -4,7 +4,7 @@
 <section class="container-dashboard">
     <div class="form-dashboard">
     <p class="form-description">Commentaires en attente de validation</p>
-        <form method="post" action="<?php $_SERVER['PHP_SELF'] ?>">
+        <form method="post" action="">
             <table>
                 <thead>
                     <tr>

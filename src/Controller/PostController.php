@@ -84,7 +84,7 @@ class PostController
         include_once __DIR__ . '/../../templates/posts/create_post.php';
         
         // Vérifier si le formulaire a été soumis.
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
             $postClean = filter_input_array(INPUT_POST);
             // Hydrater un nouvel objet Post avec les données du formulaire.
             $post = new Post();
@@ -112,13 +112,13 @@ class PostController
         }
 
         // Vérifier si GET
-        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "GET") {
             // Afficher le formulaire.
             include_once __DIR__ . '/../../templates/pages/update_post.php';
         }
 
         // Vérifier si le formulaire a été soumis.
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
             $postClean = filter_input_array(INPUT_POST);
             //Hydrater notre objet.
             $post = $this->hydrate($post, $postClean);
