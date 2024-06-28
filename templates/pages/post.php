@@ -34,7 +34,7 @@
                 <?php endforeach; ?>
             </ul>
         </div>
-        <?php if (isset($_SESSION['user'])): ?>
+        <?php if (isset($sessionClean['user'])): ?>
             <div class="add-comment">
                 <form action="" method="post">
                     <label for="content" class="form-label">Ajouter un commentaire </label>

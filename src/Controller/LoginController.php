@@ -19,16 +19,27 @@ class LoginController
         $this->userManager = new UserManager();
     }
 
+    public function cleanSession(array $session) {
+        $sessionClean = [];
+        foreach ($session as $key => $value) {
+            if (is_array($value)) {
+                $sessionClean[$key] = $this->cleanSession($value);
+            } else {
+                $sessionClean[$key] = is_null($value) ? null : htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+            }
+        }
+        return $sessionClean;
+    }
 
-    public function login()
+    public function login(array $sessionClean)
     {
-        if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+        if (isset($sessionClean['user']) && !empty($sessionClean['user'])) {
             include_once __DIR__.'/../../templates/pages/logout.php';
             exit();
         }
     
          // Vérifier si le formulaire a été soumis.
-         if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST") {
+         if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
             // Récupérer les données du formulaire.
             if(isset($this->postClean['email']) && isset($this->postClean['password']))
             $email = $this->postClean['email'];
@@ -39,8 +50,8 @@ class LoginController
 
             if ($user !== false) {
                 // L'utilisateur est valide, enregistrer la session et rediriger vers la page d'accueil.
-                $_SESSION['user'] = $user;
-                unset($_SESSION['user']['password']);
+                $sessionClean['user'] = $user;
+                unset($sessionClean['user']['password']);
                 header ("index.php");
                 return;
             } else {

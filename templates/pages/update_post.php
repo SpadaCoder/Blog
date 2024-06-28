@@ -30,10 +30,6 @@
                     <textarea class="form-control" id="author" name="author"
                         required><?php echo $post->getAuthor(); ?></textarea><br>
                 </div>
-                <div class="picture">
-                    <label for="picture" class="form-label">Image</label>
-                    <input type="file" class="form-control" id="picture" name="picture" value=<?php echo $post->getPicture(); ?>>
-                </div>
                 <button type="submit" class="btn btn-primary">Modifier</button>
             </form>
         </div>

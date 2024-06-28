@@ -24,7 +24,7 @@ class CommentController
         // end__construct().
     }
 
-    public function displayComments($postId)
+    public function displayComments(int $postId)
     {
         // Récupérer les commentaires validés pour l'article spécifié.
         $comments = $this->commentManager->getValidatedCommentsByPostId($postId);
