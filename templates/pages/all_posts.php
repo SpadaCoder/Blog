@@ -3,8 +3,8 @@
 
 <section id="post">
     <div class="container">
-    <?php foreach ($posts as $post) {
-            include __DIR__ . "/../posts/_info.php";
+        <?php foreach ($posts as $post) {
+            include __DIR__."/../posts/_info.php";
         }
         ?>
     </div>
@@ -12,6 +12,5 @@
 
 <?php $content = ob_get_clean();
 
-// Inclure le fichier layout.php
-require ('layout.php');
-?>
+// Inclure le fichier layout.php.
+require 'layout.php';

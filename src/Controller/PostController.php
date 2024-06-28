@@ -15,10 +15,14 @@ class PostController
     private $postManager;
 
     private $commentManager;
-
-
+    private $postClean;
+    
+    
     public function __construct()
     {
+        // Filtrer les données POST et les stocker dans une propriété.
+        $this->postClean = filter_input_array(INPUT_POST);
+
         // Création d'un nouveau CommentManager et PostManager.
         $this->postManager = new PostManager();
         $this->commentManager = new CommentManager();
@@ -61,8 +65,8 @@ class PostController
         // Récupérer les commentaires validés de l'article.
         $comments = $this->commentManager->getValidatedCommentsByPostId($postId);
 
-        if (!empty($_POST['content']) && isset($_POST['content'])) {
-            $contentClean = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_STRING);
+        if (!empty($this->postClean['content']) && isset($this->postClean['content'])) {
+            $contentClean = filter_input(INPUT_POST, 'content');
             // Appeler la méthode addComment de CommentManager pour ajouter le commentaire à la base de données.
             $this->commentManager->add($contentClean, $postId);
         }
@@ -78,15 +82,19 @@ class PostController
     {
         // Afficher le formulaire.
         include_once __DIR__ . '/../../templates/posts/create_post.php';
-
+        
         // Vérifier si le formulaire a été soumis.
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            $postClean = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $postClean = filter_input_array(INPUT_POST);
             // Hydrater un nouvel objet Post avec les données du formulaire.
             $post = new Post();
             $this->hydrate($post, $postClean);
+            //Récupération de la session pour userID et first_name
+            $userId = $_SESSION['userId'] ?? null;
+            $firstName = $_SESSION['first_name'] ?? 'Auteur inconnu';
+
             // Envoyer à la BDD.
-            $this->postManager->create($post);
+           $this->postManager->create($post);
             // Redirige vers la page qui affiche l'article
             header("Location: index.php?objet=post&action=display");
             exit();
@@ -111,8 +119,7 @@ class PostController
 
         // Vérifier si le formulaire a été soumis.
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            //Récupérer et nettoyer les données utilisateur.
-            $postClean = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $postClean = filter_input_array(INPUT_POST);
             //Hydrater notre objet.
             $post = $this->hydrate($post, $postClean);
 
@@ -147,8 +154,12 @@ class PostController
         $post->setSlug($slug);
         $post->setChapo($postClean['chapo']);
         $post->setContent($postClean['content']);
-        $post->setAuthor($postClean['author']);
         $post->setPicture($postClean['picture']);
+    
+    // Vérifier si 'author' existe dans $postClean avant de l'hydrater
+    if (isset($postClean['author'])) {
+        $post->setAuthor($postClean['author']);
+    }
 
         return $post;
     }

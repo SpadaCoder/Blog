@@ -1,5 +1,5 @@
 body {
-    font-family: "Quicksand", sans-serif;
+    font-family: Quicksand, sans-serif;
 }
 
 p {
@@ -8,7 +8,7 @@ p {
 
 h1,
 h2 {
-    font-family: "Poppins", sans-serif;
+    font-family: Poppins, sans-serif;
     font-size: 1.8em;
 }
 
@@ -231,6 +231,12 @@ footer {
     flex: 0 0 70%;
 }
 
+.form-description {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #624FA0; 
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -339,6 +345,13 @@ tr:hover {
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-direction: column;
+    }
+
+    .form-description {
+        font-size: 1em;
+        margin-bottom: 20px;
+        color: #624FA0; 
     }
 
     .dashboard-btn-container button {

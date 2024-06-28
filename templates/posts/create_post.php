@@ -32,6 +32,5 @@
 </body>
 <?php $content = ob_get_clean();
 
-// Inclure le fichier layout.php
-require (__DIR__ . '/../pages/layout.php');
-?>
+// Inclure le fichier layout.php.
+require __DIR__.'/../pages/layout.php';

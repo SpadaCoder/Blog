@@ -47,5 +47,4 @@
 <?php $content = ob_get_clean();
 
 // Inclure le fichier layout.php
-require ('layout.php');
-?>
+require 'layout.php';

@@ -8,10 +8,13 @@ class LoginController
 {
     // Une instance de la classe UserManager pour gérer les opérations utilisateur.
     private $userManager;
-
+    private $postClean;
 
     public function __construct()
     {
+        // Filtrer les données POST et les stocker dans une propriété.
+        $this->postClean = filter_input_array(INPUT_POST);
+
         // Création d'un nouveau UserManager.
         $this->userManager = new UserManager();
     }
@@ -27,9 +30,9 @@ class LoginController
          // Vérifier si le formulaire a été soumis.
          if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST") {
             // Récupérer les données du formulaire.
-            if(isset($_POST['email']) && isset($_POST['password']))
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+            if(isset($this->postClean['email']) && isset($this->postClean['password']))
+            $email = $this->postClean['email'];
+            $password = $this->postClean['password'];
 
             // Effectuer les vérifications nécessaires.
             $user = $this->userManager->isValidUser($email, $password);
@@ -38,7 +41,7 @@ class LoginController
                 // L'utilisateur est valide, enregistrer la session et rediriger vers la page d'accueil.
                 $_SESSION['user'] = $user;
                 unset($_SESSION['user']['password']);
-                header("index.php");
+                header ("index.php");
                 return;
             } else {
                 // L'utilisateur n'est pas valide, lever une exception.
@@ -58,12 +61,12 @@ class LoginController
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Récupérer les données du formulaire.
-            $userData = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            $userData = $this->postClean;
 
             // Créer un nouveau compte utilisateur.
             $this->userManager->createUser($userData);
 
-            header("Location: index.php?");
+            header("index.php?");
         }
     }
 

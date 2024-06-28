@@ -11,10 +11,13 @@ class CommentController
 {
 
     private $commentManager;
-
+    private $postClean;
 
     public function __construct()
     {
+        // Filtrer les données POST et les stocker dans une propriété.
+        $this->postClean = filter_input_array(INPUT_POST);
+
         // Création d'un nouveau CommentManager.
         $this->commentManager = new CommentManager();
 
@@ -27,7 +30,7 @@ class CommentController
         $comments = $this->commentManager->getValidatedCommentsByPostId($postId);
 
         // Charger la vue et passer les commentaires à afficher.
-        include __DIR__.'/../../templates/pages/comments.php';
+        include __DIR__ . '/../../templates/pages/comments.php';
     }
 
 
@@ -37,33 +40,38 @@ class CommentController
         $commentsToApprove = $this->commentManager->getCommentsToApprove();
 
         // Charger la vue et passer les commentaires à valider.
-        include_once __DIR__.'/../../templates/pages/dashboard.php';
+        include_once __DIR__ . '/../../templates/pages/dashboard.php';
 
         // Récupération de l'action et de l'id du commentaire pour modération.
-        if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
-            $action = [$_POST["action"] ?? null];
-            $id = [$_POST["comments"] ?? null];
-            if (is_array($id) === FALSE) {
-                $id = [$id];
-            }
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            // Vérifiez si l'action et les commentaires ont été soumis
+            if (isset($_POST["action"]) && isset($_POST["comments"])) {
+                $action = $_POST["action"] ?? null;
+                $commentsIds = $_POST["comments"] ?? null;
 
-            if ($action === TRUE && $id === TRUE) {
-                $this->CommentAction($action, $id);
+                // Vérifiez que $commentsIds est un tableau d'IDs
+                if (!is_array($commentsIds)) {
+                    $commentsIds = [$commentsIds];
+                }
+
+                // Appelez la méthode CommentAction du contrôleur
+                $this->CommentAction($action, $commentsIds);
+
             }
         }
         exit();
     }
 
 
-    public function CommentAction($action, $id)
+    public function CommentAction($action, $commentsIds)
     {
         // Gestion des coches de modération des commentaires.
         switch ($action) {
             case 'valider':
-                $this->commentManager->validateComments($id);
+                $this->commentManager->validateComments($commentsIds);
                 break;
             case 'supprimer':
-                $this->commentManager->deleteComments($id);
+                $this->commentManager->deleteComments($commentsIds);
                 break;
         }
     }

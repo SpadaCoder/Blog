@@ -68,18 +68,18 @@ class CommentManager
 
         return $result;
     }
-    public function validateComments($id)
+    public function validateComments($commentsIds)
     {
         // Valider les commentaires en mettant moderate à 1
-        $sql = "UPDATE comment SET moderate = 1 WHERE id IN (" . implode(',', $id) . ")";
+        $sql = "UPDATE comment SET moderate = 1 WHERE id IN (" . implode(',', $commentsIds) . ")";
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->execute();
     }
 
-    public function deleteComments($id)
+    public function deleteComments($commentsIds)
     {
         // Supprimer les commentaires de la table
-        $sql = "DELETE FROM comment WHERE id IN (" . implode(',', $id) . ")";
+        $sql = "DELETE FROM comment WHERE id IN (" . implode(',', $commentsIds) . ")";
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->execute();
     }
