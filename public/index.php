@@ -8,19 +8,25 @@ use App\Manager\UserManager;
 
 
 // Autoload des classes.
-spl_autoload_register(function ($class) {
-        $classFile = __DIR__."/../src/".str_replace('App/', '', str_replace('\\', '/', $class)).".php";
+spl_autoload_register(
+    function ($class) {
+        $classFile = __DIR__ . "/../src/" . str_replace('App/', '', str_replace('\\', '/', $class)) . ".php";
         include_once $classFile;
     }
 );
 
 session_start();
 
-$loginController = new LoginController();
-$sessionClean = $loginController->cleanSession($_SESSION);
+if (isset($_SESSION)) {
+    $loginController = new LoginController();
+    $sessionClean = $loginController->cleanSession($_SESSION);
+}
 
 try {
     $getClean = filter_input_array(INPUT_GET);
+    // Filtrer les données SERVER et les stocker dans une propriété.
+    $serverClean = filter_input_array(INPUT_SERVER);
+
     // Vérifier l'action demandée.
     if (isset($getClean['action']) === true) {
         $commentController = new CommentController();
@@ -29,12 +35,12 @@ try {
         $contactController = new ContactController($userManager);
         // Création du compte.
         if ('create_account' === $getClean['action']) {
-            $loginController->createAccount();
+            $loginController->createAccount($serverClean);
         }
 
         // Login.
         if ('login' === $getClean['action']) {
-            $loginController->login($sessionClean);
+            $loginController->login($serverClean, $sessionClean);
         }
 
         // Logout.
@@ -72,13 +78,13 @@ try {
                 }
                 // Ajout d'un Post.
                 if ('add' === $getClean['action'] && isset($getClean['objet']) && 'post' === $getClean['objet']) {
-                    $postController->add($sessionClean);
+                    $postController->add($serverClean, $sessionClean);
                 }
                 // Action sur Post existant.
                 if (isset($getClean['objet']) && 'post' === $getClean['objet'] && isset($getClean['id'])) {
                     // Modification du Post.
                     if ('update' === $getClean['action']) {
-                        $postController->update($getClean['id']);
+                        $postController->update($getClean['id'], $serverClean);
                     }
                     // Suppression du Post.
                     if ('delete' === $getClean['action']) {

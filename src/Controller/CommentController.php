@@ -12,11 +12,15 @@ class CommentController
 
     private $commentManager;
     private $postClean;
+    private $serverClean;
 
     public function __construct()
     {
         // Filtrer les données POST et les stocker dans une propriété.
         $this->postClean = filter_input_array(INPUT_POST);
+
+        // Filtrer les données SERVER et les stocker dans une propriété.
+        $this->serverClean = filter_input_array(INPUT_SERVER);
 
         // Création d'un nouveau CommentManager.
         $this->commentManager = new CommentManager();
@@ -43,7 +47,7 @@ class CommentController
         include_once __DIR__ . '/../../templates/pages/dashboard.php';
 
         // Récupération de l'action et de l'id du commentaire pour modération.
-        if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
+        if (isset($this->serverClean["REQUEST_METHOD"]) && $this->serverClean["REQUEST_METHOD"] === "POST") {
             // Vérifiez si l'action et les commentaires ont été soumis
             if (isset($this->postClean["action"]) && isset($this->postClean["comments"])) {
                 $action = $this->postClean["action"] ?? null;

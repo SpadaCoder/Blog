@@ -16,8 +16,6 @@ class Post
 
     private $userId;
 
-    private $picture;
-
     private $created;
 
     private $modified;
@@ -97,16 +95,6 @@ class Post
     public function setUserId(string $userId): self
     {
         $this->userId = $userId;
-
-        return $this;
-    }
-    public function getPicture(): string
-    {
-        return $this->picture;
-    }
-    public function setPicture(string $picture): self
-    {
-        $this->picture = $picture;
 
         return $this;
     }

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Post;
-use App\Core\Database;
 use App\Manager\PostManager;
 use App\Entity\Comment;
 use App\Manager\CommentManager;
@@ -16,12 +15,16 @@ class PostController
 
     private $commentManager;
     private $postClean;
+    private $serverClean;
 
 
     public function __construct()
     {
         // Filtrer les données POST et les stocker dans une propriété.
         $this->postClean = filter_input_array(INPUT_POST);
+
+        // Filtrer les données SERVER et les stocker dans une propriété.
+        $this->serverClean = filter_input_array(INPUT_SERVER);
 
         // Création d'un nouveau CommentManager et PostManager.
         $this->postManager = new PostManager();
@@ -66,9 +69,9 @@ class PostController
         $comments = $this->commentManager->getValidatedCommentsByPostId($postId);
 
         if (!empty($this->postClean['content']) && isset($this->postClean['content'])) {
-            $contentClean = filter_input(INPUT_POST, 'content');
+
             // Appeler la méthode addComment de CommentManager pour ajouter le commentaire à la base de données.
-            $this->commentManager->add($contentClean, $postId, $sessionClean);
+            $this->commentManager->add($this->postClean['content'], $postId, $sessionClean);
         }
 
         // Envoyer à la vue.
@@ -78,33 +81,38 @@ class PostController
     }
 
 
-    public function add(array $sessionClean)
+    public function add(array $serverClean, array $sessionClean)
     {
         // Afficher le formulaire.
         include_once __DIR__ . '/../../templates/posts/create_post.php';
 
         // Vérifier si le formulaire a été soumis.
-        if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
+        if ($serverClean["REQUEST_METHOD"] === "POST") {
             $postClean = filter_input_array(INPUT_POST);
+
+            // Vérifier si l'utilisateur est connecté
+            if (!isset($sessionClean['user'])) {
+                throw new \Exception("L'utilisateur n'est pas connecté.");
+            }
+
+            // Récupérer l'ID et le prénom de l'utilisateur depuis la session
+            $userId = $sessionClean['user']['id'] ?? null;
+            $author = $sessionClean['user']['first_name'] ?? 'Auteur inconnu';
+
             // Hydrater un nouvel objet Post avec les données du formulaire.
             $post = new Post();
             $this->hydrate($post, $postClean);
-            // Récupérer l'ID et le prénom de l'utilisateur depuis la session
-            if (!isset($sessionClean['user'])) {
-                throw new \Exception("L'utilisateur n'est pas connecté."); // Gérer le cas où l'utilisateur n'est pas connecté
-            }
-            $userId = $sessionClean['userId'] ?? null;
-            $author = $sessionClean['first_name'] ?? 'Auteur inconnu';
 
             // Envoyer à la BDD.
-            $this->postManager->create($post, $userId, $author);
-            // Redirige vers la page qui affiche l'article
-            header("Location: index.php?objet=post&action=display");
-            exit();
+            $postId = $this->postManager->create($post, $userId, $author);
+
+            // Appeler displayPost pour afficher le post créé
+            header("Location: index.php?objet=post&action=display&id=" . $postId);
+
         }
     }
 
-    public function update(int $postId)
+    public function update(int $postId, array $serverClean)
     {
         $post = $this->postManager->getOneById($postId);
 
@@ -115,13 +123,13 @@ class PostController
         }
 
         // Vérifier si GET
-        if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "GET") {
+        if (isset($serverClean["REQUEST_METHOD"]) && $serverClean["REQUEST_METHOD"] === "GET") {
             // Afficher le formulaire.
             include_once __DIR__ . '/../../templates/pages/update_post.php';
         }
 
         // Vérifier si le formulaire a été soumis.
-        if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
+        if (isset($serverClean["REQUEST_METHOD"]) && $serverClean["REQUEST_METHOD"] === "POST") {
             $postClean = filter_input_array(INPUT_POST);
             //Hydrater notre objet.
             $post = $this->hydrate($post, $postClean);
@@ -157,12 +165,6 @@ class PostController
         $post->setSlug($slug);
         $post->setChapo($postClean['chapo']);
         $post->setContent($postClean['content']);
-        $post->setPicture($postClean['picture']);
-
-        // Vérifier si 'author' existe dans $postClean avant de l'hydrater
-        if (isset($postClean['author'])) {
-            $post->setAuthor($postClean['author']);
-        }
 
         return $post;
     }

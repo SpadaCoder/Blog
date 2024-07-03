@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Post;
+use App\Entity\User;
 
 use App\Core\Database;
 
@@ -49,12 +50,12 @@ class PostManager
 
     }
 
-    public function create($post, $userId, $author)
+    public function create(Post $post, $userId, $author)
     {
         // Requête SQL d'insertion
         $sql = "
-            INSERT INTO post (title, slug, chapo, content, picture, created, modified, user_id,  author) 
-            VALUES (:title, :slug, :chapo, :content, :picture, NOW(), NOW(), :user_id, :author)
+            INSERT INTO post (title, slug, chapo, content, created, modified, user_id,  author) 
+            VALUES (:title, :slug, :chapo, :content, NOW(), NOW(), :user_id, :author)
         ";
         $stmt = $this->database->getConnection()->prepare($sql);
 
@@ -64,32 +65,35 @@ class PostManager
             ':slug' => $post->getSlug(),
             ':chapo' => $post->getChapo(),
             ':content' => $post->getContent(),
-            ':picture' => $post->getPicture(),
             ':user_id' => $userId,
             ':author' => $author,
         ]);
+
+        // Récupérer et retourner l'ID du post inséré (en tant qu'entier)
+        return (int) $this->database->getConnection()->lastInsertId();
     }
 
     public function getOneById(int $id): ?Post
     {
         // Requête pour récupérer les détails du post spécifique
         $sql = "
-            SELECT post.*
+            SELECT post.*, user.first_name as author
             FROM post
+            LEFT JOIN user ON post.user_id = user.id
             WHERE post.id = :id
         ";
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->execute([':id' => $id]);
 
         // Récupérer le résultat 
-        $result = $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Entity\Post");
+        $post = $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Entity\Post");
 
         // Vérifier si un post a été trouvé
-        if (count($result) === 0) {
+        if ($post === false) {
             return null;
         }
 
-        return $result[0];
+        return $post[0];
     }
 
     public function update(Post $post): void
@@ -98,18 +102,18 @@ class PostManager
         // Requête de modification
         $sql = "
             UPDATE post
-            SET title = :title, slug = :slug, chapo = :chapo, content = :content, author = :author, picture = :picture, modified = NOW()
+            SET title = :title, slug = :slug, chapo = :chapo, content = :content, author = :author, modified = NOW()
             WHERE id = :id
         ";
         $stmt = $this->database->getConnection()->prepare($sql);
+
         //Exécution de la requête avec les données du formulaire
         $stmt->execute([
             ':title' => $post->getTitle(),
             ':slug' => $post->getSlug(),
             ':chapo' => $post->getChapo(),
             ':content' => $post->getContent(),
-            ':author' => $post->getAuthor(),
-            ':picture' => $post->getPicture(),
+            ':author' =>$post->getAuthor(),
             ':id' => $post->getId(),
         ]);
 
