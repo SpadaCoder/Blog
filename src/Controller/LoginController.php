@@ -10,6 +10,7 @@ class LoginController
     private $userManager;
     private $postClean;
 
+
     public function __construct()
     {
         // Filtrer les données POST et les stocker dans une propriété.
@@ -19,7 +20,8 @@ class LoginController
         $this->userManager = new UserManager();
     }
 
-    public function cleanSession(array $session) {
+    public function cleanSession(array $session)
+    {
         $sessionClean = [];
         foreach ($session as $key => $value) {
             if (is_array($value)) {
@@ -31,18 +33,18 @@ class LoginController
         return $sessionClean;
     }
 
-    public function login(array $sessionClean)
+    public function login(array $serverClean, array $sessionClean)
     {
         if (isset($sessionClean['user']) && !empty($sessionClean['user'])) {
-            include_once __DIR__.'/../../templates/pages/logout.php';
+            include_once __DIR__ . '/../../templates/pages/logout.php';
             exit();
         }
-    
-         // Vérifier si le formulaire a été soumis.
-         if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
+
+        // Vérifier si le formulaire a été soumis.
+        if (isset($serverClean["REQUEST_METHOD"]) && $serverClean["REQUEST_METHOD"] === "POST") {
             // Récupérer les données du formulaire.
-            if(isset($this->postClean['email']) && isset($this->postClean['password']))
-            $email = $this->postClean['email'];
+            if (isset($this->postClean['email']) && isset($this->postClean['password']))
+                $email = $this->postClean['email'];
             $password = $this->postClean['password'];
 
             // Effectuer les vérifications nécessaires.
@@ -50,9 +52,11 @@ class LoginController
 
             if ($user !== false) {
                 // L'utilisateur est valide, enregistrer la session et rediriger vers la page d'accueil.
-                $sessionClean['user'] = $user;
-                unset($sessionClean['user']['password']);
-                header ("index.php");
+                $_SESSION['user'] = $user;
+                unset($_SESSION['user']['password']);
+
+                // Rediriger vers la page d'accueil après la connexion réussie.
+                header("Location: index.php?");
                 return;
             } else {
                 // L'utilisateur n'est pas valide, lever une exception.
@@ -61,24 +65,25 @@ class LoginController
         }
 
         // Inclure le formulaire de connexion si le formulaire n'a pas été soumis.
-        include_once __DIR__.'/../../templates/pages/login.php';
+        include_once __DIR__ . '/../../templates/pages/login.php';
         exit();
     }
 
 
-    public function createAccount()
+    public function createAccount($serverClean)
     {
-        include_once __DIR__.'/../../templates/pages/registration.php';
+        include __DIR__ . '/../../templates/pages/registration.php';
 
-        if (isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
+        if (isset($serverClean["REQUEST_METHOD"]) && $serverClean["REQUEST_METHOD"] === "POST") {
             // Récupérer les données du formulaire.
             $userData = $this->postClean;
 
             // Créer un nouveau compte utilisateur.
             $this->userManager->createUser($userData);
 
-            header("index.php?");
+            header("Location: index.php?action=login");
         }
+        exit();
     }
 
 

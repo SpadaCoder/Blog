@@ -4,11 +4,11 @@ namespace App\Entity;
 
 class User
 {
-    private $id;
-    private $firstName;
-    private $lastName;
-    private $email;
-    private $password;
+    private int $id;
+    private string $firstName;
+    private string $lastName;
+    private string $email;
+    private string $password;
 
     // Constructeur, getters et setters
 
