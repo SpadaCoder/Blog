@@ -7,11 +7,28 @@ use App\Core\Database;
 
 class UserManager
 {
-    private $database;
+
+    private $database; // La connexion à la base de données.
+
+
+    /**
+     * Constructeur de la classe UserManager.
+     * Initialise la connexion à la base de données.
+     */
     public function __construct()
     {
         $this->database = new Database;
+        
     }
+
+
+    /**
+     * Crée un nouvel utilisateur dans la base de données.
+     *
+     * @param array $userData Les données de l'utilisateur à insérer.
+     *                       Doit contenir 'first_name', 'last_name', 'email', 'password'.
+     * @return void
+     */
     public function createUser($userData)
     {
         // Hacher le mot de passe
@@ -30,6 +47,14 @@ class UserManager
         $stmt->execute();
     }
 
+
+    /**
+     * Vérifie si un utilisateur avec l'email et le mot de passe donnés existe et est valide.
+     *
+     * @param string $email L'email de l'utilisateur à vérifier.
+     * @param string $password Le mot de passe de l'utilisateur à vérifier.
+     * @return mixed Retourne les informations de l'utilisateur s'il est valide, sinon false.
+     */
     public function isValidUser(string $email, string $password): mixed
     {
         // Requête pour récupérer l'utilisateur en fonction de l'e-mail
@@ -48,6 +73,12 @@ class UserManager
         return false;
     }
 
+
+    /**
+     * Récupère les adresses email des administrateurs.
+     *
+     * @return array Un tableau contenant les adresses email des administrateurs.
+     */
     public function getAdminEmails()
     {
         $sql = "SELECT email FROM user WHERE role = 'admin'";

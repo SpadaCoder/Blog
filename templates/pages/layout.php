@@ -17,14 +17,14 @@
 <body>
     <?php
     // Inclure le fichier header.php.
-    include 'header.php';
+    require 'header.php';
     ?>
     
     <?= $content ?>
 
     <?php
     // Inclure le fichier header.php.
-    include 'footer.php';
+    require 'footer.php';
     ?>
 </body>
 

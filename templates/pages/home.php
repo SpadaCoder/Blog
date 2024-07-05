@@ -2,9 +2,9 @@
 <?php ob_start(); ?>
 
 <div class="alert alert-success" role="alert">
-    <?php if (isset($sessionClean['user'])): ?>
+    <?php if (isset($sessionClean['user']) === TRUE) : ?>
         Bonjour <?php echo $sessionClean['user']['first_name']; ?> et bienvenue sur le site !
-    <?php else: ?>
+    <?php else : ?>
         Bienvenue sur le site !
     <?php endif; ?>
     
@@ -12,7 +12,7 @@
 <section id="post">
     <div class="container">
         <?php foreach ($posts as $post) {
-            include __DIR__ . "/../posts/_info.php";
+            include __DIR__."/../posts/_info.php";
         }
         ?>
     </div>
@@ -50,5 +50,5 @@
 
 <?php $content = ob_get_clean();
 
-// Inclure le fichier layout.php
+// Inclure le fichier layout.php.
 require 'layout.php';

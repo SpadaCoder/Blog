@@ -10,14 +10,14 @@ use App\Manager\UserManager;
 // Autoload des classes.
 spl_autoload_register(
     function ($class) {
-        $classFile = __DIR__ . "/../src/" . str_replace('App/', '', str_replace('\\', '/', $class)) . ".php";
+        $classFile = __DIR__."/../src/" . str_replace('App/', '', str_replace('\\', '/', $class)) . ".php";
         include_once $classFile;
     }
 );
 
 session_start();
 
-if (isset($_SESSION)) {
+if (isset($_SESSION) === TRUE) {
     $loginController = new LoginController();
     $sessionClean = $loginController->cleanSession($_SESSION);
 }
@@ -59,10 +59,11 @@ try {
         if (isset($getClean['objet']) === TRUE && 'post' === $getClean['objet']) {
             // Tous les Posts.
             if ('displayAll' === $getClean['action']) {
-                $postController->displayAll($sessionClean);
+                $postController->displayAll();
             }
+
             // Affichage d'un Post avec son id.
-            if (isset($getClean['id'])) {
+            if (isset($getClean['id']) === TRUE) {
                 if ('display' === $getClean['action']) {
                     $postController->displayPost($getClean['id'], $sessionClean);
                 }
@@ -70,8 +71,8 @@ try {
         }
 
         // Administration.
-        if (isset($getClean['role']) && 'admin' === $getClean['role']) {
-            //Approbation des commentaires.
+        if (isset($getClean['role']) === TRUE && $getClean['role'] === 'admin') {
+            // Approbation des commentaires.
             if (isset($sessionClean['user']) && $sessionClean['user']['role'] === 'admin') {
                 if ('approvecomments' === $getClean['action']) {
                     $commentController->displayCommentsToApprove();
@@ -81,7 +82,7 @@ try {
                     $postController->add($serverClean, $sessionClean);
                 }
                 // Action sur Post existant.
-                if (isset($getClean['objet']) && 'post' === $getClean['objet'] && isset($getClean['id'])) {
+                if (isset($getClean['objet']) === TRUE && 'post' === $getClean['objet'] && isset($getClean['id'])) {
                     // Modification du Post.
                     if ('update' === $getClean['action']) {
                         $postController->update($getClean['id'], $serverClean);
@@ -94,13 +95,15 @@ try {
                 // Message d'erreur non admin.
             } else {
                 $error_message = "Vous n'avez pas les autorisations nécessaires pour accéder à cette page veuillez vous connecter en tant qu'admin";
-                require (__DIR__ . '/../templates/pages/error.php');
+                require __DIR__.'/../templates/pages/error.php';
                 exit;
+
+                //End if.
             }
         } else {
             $postController->displayLastPosts($sessionClean);
         }
-        // end if
+        // End if.
     }
 
     // Vérifier si aucun objet n'est spécifié.
@@ -112,6 +115,6 @@ try {
     }
 } catch (\Exception $e) {
     // Gérer toutes les autres exceptions.
-    $error_message = 'Erreur : ' . $e->getMessage();
+    $error_message = 'Erreur : '.$e->getMessage();
     require (__DIR__ . '/../templates/pages/error.php');
 }
