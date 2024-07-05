@@ -38,7 +38,7 @@ class LoginController
         foreach ($session as $key => $value) {
             if (is_array($value) === TRUE) {
                 $sessionClean[$key] = $this->cleanSession($value);
-            } else {
+            } elseif ($value !== null) {
                 $sessionClean[$key] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
             }
         }
