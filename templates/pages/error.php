@@ -1,4 +1,4 @@
-<?php $title = "SpadaCoder - Erreur de page"; 
+<?php $title = "SpadaCoder - Erreur de page";
 ?>
 
 <?php ob_start(); ?>

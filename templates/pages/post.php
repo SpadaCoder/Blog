@@ -29,12 +29,12 @@
         <div class="display-comment">
             <h3>Commentaires</h3>
             <ul>
-                <?php foreach ($comments as $comment): ?>
+                <?php foreach ($comments as $comment) : ?>
                     <li><?php echo $comment->getContent(); ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
-        <?php if (isset($sessionClean['user'])): ?>
+        <?php if (isset($sessionClean['user']) === TRUE) : ?>
             <div class="add-comment">
                 <form action="" method="post">
                     <label for="content" class="form-label">Ajouter un commentaire </label>
@@ -42,7 +42,7 @@
                     <button type="submit">Poster</button>
                 </form>
             </div>
-        <?php else: ?>
+        <?php else : ?>
            <p>Veuillez vous connecter pour laisser un commentaire</p>
         <?php endif; ?>
     </div>

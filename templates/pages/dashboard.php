@@ -14,7 +14,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($commentsToApprove as $comment): ?>
+                    <?php foreach ($commentsToApprove as $comment) : ?>
                         <tr>
 
                             <td><input type="checkbox" name="comments[]" value="<?php echo $comment->getId(); ?>"></td>
