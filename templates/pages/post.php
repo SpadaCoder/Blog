@@ -15,7 +15,7 @@
             </p>
             <div class="post-meta">
                 <p class="post-author">Ecrit par :
-                    <?php echo $post->getAuthor(); ?>
+                    <?php echo $post->getUser()->getFirstName(); ?>
                 </p>
                 <p class="post-modified">Modifié le :
                     <?php echo $post->getModified(); ?>

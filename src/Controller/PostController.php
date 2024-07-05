@@ -127,14 +127,13 @@ class PostController
 
             // Récupérer l'ID et le prénom de l'utilisateur depuis la session.
             $userId = $sessionClean['user']['id'] ?? null;
-            $author = $sessionClean['user']['first_name'] ?? 'Auteur inconnu';
-
+          
             // Hydrater un nouvel objet Post avec les données du formulaire.
             $post = new Post();
             $this->hydrate($post, $postClean);
 
             // Envoyer à la BDD.
-            $postId = $this->postManager->create($post, $userId, $author);
+            $postId = $this->postManager->create($post, $userId);
 
             // Afficher le post créé.
             header("Location: index.php?objet=post&action=display&id=".$postId);

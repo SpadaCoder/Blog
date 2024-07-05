@@ -13,13 +13,13 @@ class Post
 
     private $content; // Le contenu principal de l'article.
 
-    private $author; // L'auteur de l'article.
-
     private $userId; // L'identifiant de l'utilisateur ayant créé l'article.
 
     private $modified; // La date de dernière modification de l'article.
 
     private $id; // L'identifiant de l'article.
+
+    private ?User $user = null;
 
 
     /**
@@ -128,31 +128,6 @@ class Post
 
 
     /**
-     * Obtient l'auteur de l'article.
-     *
-     * @return string L'auteur de l'article.
-     */
-    public function getAuthor(): string
-    {
-        return $this->author;
-    }
-
-
-    /**
-     * Définit l'auteur de l'article.
-     *
-     * @param string $author L'auteur de l'article.
-     * @return self
-     */
-    public function setAuthor(string $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-
-    /**
      * Obtient l'identifiant de l'utilisateur ayant créé l'article.
      *
      * @return string L'identifiant de l'utilisateur.
@@ -225,6 +200,19 @@ class Post
 
         return $this;
     }
+
+    public function getUser() 
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
 
 
     /**
