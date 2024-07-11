@@ -76,15 +76,14 @@ class PostManager
      *
      * @param Post $post L'objet Post à insérer.
      * @param int $userId L'identifiant de l'utilisateur créant le post.
-     * @param string $author L'auteur du post.
      * @return int L'identifiant (ID) du post inséré.
      */
-    public function create(Post $post, $userId, $author)
+    public function create(Post $post, $userId)
     {
         // Requête SQL d'insertion d'un nouveau post.
         $sql = "
-            INSERT INTO post (title, slug, chapo, content, created, modified, user_id,  author) 
-            VALUES (:title, :slug, :chapo, :content, NOW(), NOW(), :user_id, :author)
+            INSERT INTO post (title, slug, chapo, content, created, modified, userId) 
+            VALUES (:title, :slug, :chapo, :content, NOW(), NOW(), :userId)
         ";
         $stmt = $this->database->getConnection()->prepare($sql);
 
@@ -95,8 +94,7 @@ class PostManager
                 ':slug' => $post->getSlug(),
                 ':chapo' => $post->getChapo(),
                 ':content' => $post->getContent(),
-                ':user_id' => $userId,
-                ':author' => $author,
+                ':userId' => $userId,
             ]
         );
 
@@ -115,9 +113,8 @@ class PostManager
     {
         // Requête pour récupérer les détails du post spécifique.
         $sql = "
-            SELECT post.*, user.first_name as author
+            SELECT post.*
             FROM post
-            LEFT JOIN user ON post.user_id = user.id
             WHERE post.id = :id
         ";
         $stmt = $this->database->getConnection()->prepare($sql);
@@ -131,7 +128,12 @@ class PostManager
             return null;
         }
 
-        return $post[0];
+        $post = $post[0];
+        $usermanager = new UserManager();
+        $user = $usermanager->getUserById($post->getUserId());
+        $post->setUser($user);
+
+        return $post;
     }
 
 
@@ -147,7 +149,7 @@ class PostManager
         // Requête de modification.
         $sql = "
             UPDATE post
-            SET title = :title, slug = :slug, chapo = :chapo, content = :content, author = :author, modified = NOW()
+            SET title = :title, slug = :slug, chapo = :chapo, content = :content, modified = NOW()
             WHERE id = :id
         ";
         $stmt = $this->database->getConnection()->prepare($sql);
@@ -159,7 +161,6 @@ class PostManager
                 ':slug' => $post->getSlug(),
                 ':chapo' => $post->getChapo(),
                 ':content' => $post->getContent(),
-                ':author' => $post->getAuthor(),
                 ':id' => $post->getId(),
             ]
         );
@@ -194,14 +195,17 @@ class PostManager
     {
         $posts = [];
 
+        $usermanager = new UserManager();
         foreach ($rows as $row) {
             $post = new Post();
             $post->setTitle($row['title']);
             $post->setChapo($row['chapo']);
             $post->setContent($row['content']);
-            $post->setAuthor($row['author']);
             $post->setModified($row['modified']);
             $post->setId($row['id']);
+
+            $user = $usermanager->getUserById($row['id']);
+            $post->setUser($user);
 
             $posts[] = $post;
         }

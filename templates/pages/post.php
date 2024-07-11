@@ -15,7 +15,7 @@
             </p>
             <div class="post-meta">
                 <p class="post-author">Ecrit par :
-                    <?php echo $post->getAuthor(); ?>
+                    <?php echo $post->getUser()->getFirstName(); ?>
                 </p>
                 <p class="post-modified">Modifié le :
                     <?php echo $post->getModified(); ?>
@@ -30,7 +30,7 @@
             <h3>Commentaires</h3>
             <ul>
                 <?php foreach ($comments as $comment) : ?>
-                    <li><?php echo $comment->getContent(); ?></li>
+                    <li><?php echo $comment->getContent()." - Auteur : ".$comment->getUser()->getFirstName(); ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>

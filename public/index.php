@@ -59,7 +59,7 @@ try {
         if (isset($getClean['objet']) === TRUE && 'post' === $getClean['objet']) {
             // Tous les Posts.
             if ('displayAll' === $getClean['action']) {
-                $postController->displayAll();
+                $postController->displayAll($sessionClean);
             }
 
             // Affichage d'un Post avec son id.

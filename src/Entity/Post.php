@@ -13,13 +13,15 @@ class Post
 
     private $content; // Le contenu principal de l'article.
 
-    private $author; // L'auteur de l'article.
-
     private $userId; // L'identifiant de l'utilisateur ayant créé l'article.
 
     private $modified; // La date de dernière modification de l'article.
 
     private $id; // L'identifiant de l'article.
+
+    private ?User $user = null; // Objet User.
+
+    private ?Comment $comment = null; // Objet Comment.
 
 
     /**
@@ -128,31 +130,6 @@ class Post
 
 
     /**
-     * Obtient l'auteur de l'article.
-     *
-     * @return string L'auteur de l'article.
-     */
-    public function getAuthor(): string
-    {
-        return $this->author;
-    }
-
-
-    /**
-     * Définit l'auteur de l'article.
-     *
-     * @param string $author L'auteur de l'article.
-     * @return self
-     */
-    public function setAuthor(string $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-
-    /**
      * Obtient l'identifiant de l'utilisateur ayant créé l'article.
      *
      * @return string L'identifiant de l'utilisateur.
@@ -222,6 +199,56 @@ class Post
     public function setId(string $id): self
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+
+    /**
+     * Récupère l'utilisateur associé à ce commentaire.
+     *
+     * @return User|null
+     */
+    public function getUser() 
+    {
+        return $this->user;
+    }
+
+
+    /**
+     * Définit l'utilisateur associé à ce commentaire.
+     *
+     * @param User|null $user L'utilisateur à définir
+     * @return self
+     */
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * Récupère le commentaire associé à ce post.
+     *
+     * @return Comment|null
+     */
+    public function getComment() 
+    {
+        return $this->comment;
+    }
+
+
+    /**
+     * Définit le commentaire asscoié à ce post.
+     *
+     * @param Comment|null $post L'article à définir
+     * @return self
+     */
+    public function setComment(?Comment $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

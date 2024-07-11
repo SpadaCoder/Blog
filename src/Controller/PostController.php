@@ -60,7 +60,7 @@ class PostController
     /**
      * Affiche tous les posts.
      */
-    public function displayAll()
+    public function displayAll($sessionClean)
     {
 
         $posts = $this->postManager->getPostAll();
@@ -127,14 +127,13 @@ class PostController
 
             // Récupérer l'ID et le prénom de l'utilisateur depuis la session.
             $userId = $sessionClean['user']['id'] ?? null;
-            $author = $sessionClean['user']['first_name'] ?? 'Auteur inconnu';
-
+          
             // Hydrater un nouvel objet Post avec les données du formulaire.
             $post = new Post();
             $this->hydrate($post, $postClean);
 
             // Envoyer à la BDD.
-            $postId = $this->postManager->create($post, $userId, $author);
+            $postId = $this->postManager->create($post, $userId);
 
             // Afficher le post créé.
             header("Location: index.php?objet=post&action=display&id=".$postId);
@@ -203,6 +202,13 @@ class PostController
     }
 
 
+    /**
+    * Hydrate un objet Post avec des données nettoyées.
+    *
+    * @param Post $post L'objet Post à hydrater
+    * @param array $postClean Le tableau de données nettoyées du post
+    * @return Post|null L'objet Post hydraté, ou null si $post est null
+    */
     public function hydrate(Post $post, array $postClean): ?Post
     {
         // Appel de la méthode generateSlug() de la classe Post.

@@ -18,7 +18,7 @@ class UserManager
     public function __construct()
     {
         $this->database = new Database;
-        
+
     }
 
 
@@ -32,8 +32,8 @@ class UserManager
     public function createUser($userData)
     {
         // Hacher le mot de passe
-    $passwordHash = password_hash($userData['password'], PASSWORD_DEFAULT);
-    $userData['password'] = $passwordHash;
+        $passwordHash = password_hash($userData['password'], PASSWORD_DEFAULT);
+        $userData['password'] = $passwordHash;
 
         $sql = "
         INSERT INTO user (first_name, last_name, email, password, role,created) 
@@ -63,13 +63,15 @@ class UserManager
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
-        
+
         // Vérifier si le mot de passe fourni correspond au mot de passe stocké
-        if ($user !== false &&
-            password_verify($password, $user['password'])) {
+        if (
+            $user !== false &&
+            password_verify($password, $user['password'])
+        ) {
             return $user;
-        } 
-            
+        }
+
         return false;
     }
 
@@ -86,6 +88,30 @@ class UserManager
         $stmt->execute();
         $adminEmails = $stmt->fetchAll(\PDO::FETCH_COLUMN);
         return $adminEmails;
+    }
+
+
+    /**
+    * Récupère un utilisateur par son identifiant depuis la base de données.
+    *
+    * @param int $id L'identifiant de l'utilisateur à récupérer
+    * @return User|null L'objet User correspondant à l'identifiant, ou null si non trouvé
+    */
+    public function getUserById(int $id)
+    {
+        $sql = "SELECT * FROM user WHERE id = " . $id;
+        $stmt = $this->database->getConnection()->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll();
+        foreach ($data as $datum) {
+            $user = new User();
+            $user->setId($datum['id']);
+            $user->setFirstName($datum['first_name']);
+            $user->setLastName($datum['last_name']);
+            $user->setEmail($datum['email']);
+            return $user;
+        }
+        return null;
     }
 
 }
