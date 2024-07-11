@@ -23,3 +23,11 @@ $dbPassword = 'password';
 $dbBase = 'mydb';
 ```
 
+## Configuration
+Une fois installé, vous pouvez accéder à l'application via votre navigateur web.
+Vous pouvez vous connecter et accéder à l'administration avec les identifiants suivants :
+
+```bash
+E-mail :  admin@mail.com
+Mot de passe : Admin2024+
+```
