@@ -19,7 +19,9 @@ class Post
 
     private $id; // L'identifiant de l'article.
 
-    private ?User $user = null;
+    private ?User $user = null; // Objet User.
+
+    private ?Comment $comment = null; // Objet Comment.
 
 
     /**
@@ -201,11 +203,24 @@ class Post
         return $this;
     }
 
+
+    /**
+     * Récupère l'utilisateur associé à ce commentaire.
+     *
+     * @return User|null
+     */
     public function getUser() 
     {
         return $this->user;
     }
 
+
+    /**
+     * Définit l'utilisateur associé à ce commentaire.
+     *
+     * @param User|null $user L'utilisateur à définir
+     * @return self
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -213,6 +228,30 @@ class Post
         return $this;
     }
 
+
+    /**
+     * Récupère le commentaire associé à ce post.
+     *
+     * @return Comment|null
+     */
+    public function getComment() 
+    {
+        return $this->comment;
+    }
+
+
+    /**
+     * Définit le commentaire asscoié à ce post.
+     *
+     * @param Comment|null $post L'article à définir
+     * @return self
+     */
+    public function setComment(?Comment $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
 
 
     /**

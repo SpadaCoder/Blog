@@ -35,15 +35,15 @@ class CommentManager
     {
         $userId = $sessionClean['user']['id'];
         $sql = "
-            INSERT INTO comment (post_id, content, user_id, created, modified, moderate) 
-            VALUES (:post_id, :content, :user_id, NOW(), NOW(), false)
+            INSERT INTO comment (postId, content, userId, created, modified, moderate) 
+            VALUES (:postId, :content, :userId, NOW(), NOW(), false)
         ";
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->execute(
             [
-                ':post_id' => $postId,
+                ':postId' => $postId,
                 ':content' => $content,
-                ':user_id' => $userId,
+                ':userId' => $userId,
             ]
         );
     }
@@ -58,9 +58,9 @@ class CommentManager
     public function getValidatedCommentsByPostId($postId): array
     {
         // Requête pour récupérer les commentaires validés d'un article spécifique.
-        $sql = "SELECT * FROM comment WHERE post_id = :post_id AND moderate = 1";
+        $sql = "SELECT * FROM comment WHERE postId = :postId AND moderate = 1";
         $stmt = $this->database->getConnection()->prepare($sql);
-        $stmt->execute([':post_id' => $postId]);
+        $stmt->execute([':postId' => $postId]);
         $rows = $stmt->fetchAll();
 
         $comments = [];
@@ -69,7 +69,10 @@ class CommentManager
             // Hydrate l'objet Comment avec les données de la base de données.
             $comment->setId($row['id']);
             $comment->setContent($row['content']);
-            $comment->setUserId($row['user_id']);
+            $comment->setUserId($row['userId']);
+
+            // Utilisation de la fonction utilitaire pour récupérer et associer l'utilisateur.
+            $this->getUserForComment($comment);
 
             $comments[] = $comment;
         }
@@ -87,18 +90,28 @@ class CommentManager
     {
         // Requête pour récupérer les commentaires non validés.
         $sql = "
-            SELECT comment.*, CONCAT(user.first_name, ' ', user.last_name) AS author
+            SELECT comment.*
             FROM comment
-            INNER JOIN user ON comment.user_id = user.id
             WHERE moderate = 0
         ";
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->execute();
 
         // Récupérer le résultat.
-        $result = $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Entity\Comment");
+        $comments = $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Entity\Comment");
 
-        return $result;
+        $usermanager = new UserManager();
+        $postmanager = new PostManager();
+
+        // Pour chaque commentaire, associer l'utilisateur et le post
+        foreach ($comments as $comment) {
+            // Utilisation de la fonction utilitaire pour récupérer et associer l'utilisateur.
+            $this->getUserForComment($comment);
+            $post = $postmanager->getOneById($comment->getPostId());
+            $comment->setPost($post);
+        }
+
+        return $comments;
     }
 
 
@@ -129,5 +142,21 @@ class CommentManager
         $sql = "DELETE FROM comment WHERE id IN (".implode(',', $commentsIds) . ")";
         $stmt = $this->database->getConnection()->prepare($sql);
         $stmt->execute();
+    }
+
+
+    /**
+    * Récupère l'utilisateur associé à un commentaire donné.
+    *
+    * @param Comment $comment Le commentaire pour lequel récupérer l'utilisateur
+    * @return void
+    */
+    private function getUserForComment(Comment $comment)
+    {
+        $userManager = new UserManager(); 
+        $user = $userManager->getUserById($comment->getUserId());
+        
+        // Associe l'utilisateur au commentaire.
+        $comment->setUser($user);
     }
 }

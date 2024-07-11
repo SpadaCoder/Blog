@@ -90,6 +90,13 @@ class UserManager
         return $adminEmails;
     }
 
+
+    /**
+    * Récupère un utilisateur par son identifiant depuis la base de données.
+    *
+    * @param int $id L'identifiant de l'utilisateur à récupérer
+    * @return User|null L'objet User correspondant à l'identifiant, ou null si non trouvé
+    */
     public function getUserById(int $id)
     {
         $sql = "SELECT * FROM user WHERE id = " . $id;
@@ -105,7 +112,6 @@ class UserManager
             return $user;
         }
         return null;
-
     }
 
 }

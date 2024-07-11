@@ -30,7 +30,7 @@
             <h3>Commentaires</h3>
             <ul>
                 <?php foreach ($comments as $comment) : ?>
-                    <li><?php echo $comment->getContent(); ?></li>
+                    <li><?php echo $comment->getContent()." - Auteur : ".$comment->getUser()->getFirstName(); ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>

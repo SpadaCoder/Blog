@@ -17,15 +17,19 @@ class Comment
 
     private $postId; // Identifiant du post auquel le commentaire est associé.
 
-    private $moderate; // Statut de modération du commentaire
+    private $moderate; // Statut de modération du commentaire.
+
+    private ?User $user = null; // Objet User.
+
+    private ?Post $post = null; // Objet Post.
 
 
     /**
      * Obtient l'identifiant de l'utilisateur ayant créé le commentaire.
      *
-     * @return string Identifiant de l'utilisateur.
+     * @return int Identifiant de l'utilisateur.
      */
-    public function getUserId(): string
+    public function getUserId(): int
     {
         return $this->userId;
     }
@@ -34,10 +38,10 @@ class Comment
     /**
      * Définit l'identifiant de l'utilisateur ayant créé le commentaire.
      *
-     * @param string $userId Identifiant de l'utilisateur.
+     * @param int $userId Identifiant de l'utilisateur.
      * @return self
      */
-    public function setUserId(string $userId): self
+    public function setUserId(int $userId): self
     {
         $this->userId = $userId;
 
@@ -192,6 +196,56 @@ class Comment
     public function setModerate(string $moderate): self
     {
         $this->moderate = $moderate;
+
+        return $this;
+    }
+
+
+    /**
+     * Récupère l'utilisateur associé à ce commentaire.
+     *
+     * @return User|null
+     */
+    public function getUser() 
+    {
+        return $this->user;
+    }
+
+
+    /**
+     * Définit l'utilisateur associé à ce commentaire.
+     *
+     * @param User|null $user L'utilisateur à définir
+     * @return self
+     */
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
+    /**
+     * Récupère l'article associé à ce commentaire.
+     *
+     * @return Post|null
+     */
+    public function getPost() 
+    {
+        return $this->post;
+    }
+
+
+    /**
+     * Définit l'article associé à ce commentaire.
+     *
+     * @param Post|null $post L'article à définir
+     * @return self
+     */
+    public function setPost(?Post $post): self
+    {
+        $this->post = $post;
 
         return $this;
     }

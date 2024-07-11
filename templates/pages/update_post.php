@@ -25,11 +25,6 @@
                     <textarea class="form-control" id="content" name="content" rows=5
                         required><?php echo $post->getContent(); ?></textarea><br>
                 </div>
-                <div class="author">
-                <label for="author" class="form-label">Ecrit par</label>
-                    <textarea class="form-control" id="author" name="author"
-                        required><?php echo $post->getAuthor(); ?></textarea><br>
-                </div>
                 <button type="submit" class="btn btn-primary">Modifier</button>
             </form>
         </div>

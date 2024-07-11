@@ -82,8 +82,8 @@ class PostManager
     {
         // Requête SQL d'insertion d'un nouveau post.
         $sql = "
-            INSERT INTO post (title, slug, chapo, content, created, modified, user_id) 
-            VALUES (:title, :slug, :chapo, :content, NOW(), NOW(), :user_id)
+            INSERT INTO post (title, slug, chapo, content, created, modified, userId) 
+            VALUES (:title, :slug, :chapo, :content, NOW(), NOW(), :userId)
         ";
         $stmt = $this->database->getConnection()->prepare($sql);
 
@@ -94,7 +94,7 @@ class PostManager
                 ':slug' => $post->getSlug(),
                 ':chapo' => $post->getChapo(),
                 ':content' => $post->getContent(),
-                ':user_id' => $userId,
+                ':userId' => $userId,
             ]
         );
 
@@ -113,9 +113,8 @@ class PostManager
     {
         // Requête pour récupérer les détails du post spécifique.
         $sql = "
-            SELECT post.*, user.first_name as author
+            SELECT post.*
             FROM post
-            LEFT JOIN user ON post.userId = user.id
             WHERE post.id = :id
         ";
         $stmt = $this->database->getConnection()->prepare($sql);

@@ -60,7 +60,7 @@ class PostController
     /**
      * Affiche tous les posts.
      */
-    public function displayAll()
+    public function displayAll($sessionClean)
     {
 
         $posts = $this->postManager->getPostAll();
@@ -202,6 +202,13 @@ class PostController
     }
 
 
+    /**
+    * Hydrate un objet Post avec des données nettoyées.
+    *
+    * @param Post $post L'objet Post à hydrater
+    * @param array $postClean Le tableau de données nettoyées du post
+    * @return Post|null L'objet Post hydraté, ou null si $post est null
+    */
     public function hydrate(Post $post, array $postClean): ?Post
     {
         // Appel de la méthode generateSlug() de la classe Post.

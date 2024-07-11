@@ -11,6 +11,7 @@
                         <th>Sélection</th>
                         <th>Commentaire</th>
                         <th>Auteur</th>
+                        <th>Post</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -19,7 +20,8 @@
 
                             <td><input type="checkbox" name="comments[]" value="<?php echo $comment->getId(); ?>"></td>
                             <td><?php echo $comment->getContent(); ?></td>
-                            <td><?php echo $comment->author; ?></td>
+                            <td><?php echo $comment->getUser()->getFirstName().' '.$comment->getUser()->getLastName(); ?></td>
+                            <td><?php echo $comment->getPost()->getId(); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
