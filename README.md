@@ -31,3 +31,6 @@ Vous pouvez vous connecter et accéder à l'administration avec les identifiants
 E-mail :  admin@mail.com
 Mot de passe : Admin2024+
 ```
+
+## Notation Codacy
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1bf03ce8090c4b7981018c0a93f67b33)](https://app.codacy.com/gh/SpadaCoder/Blog/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
