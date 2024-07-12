@@ -18,10 +18,19 @@
         </a>
         <a href="index.php?action=login" class="menu-item">
             <img src="/../../../public/assets/images/enregistrement.png" alt="Connexion">
-            <div>Connexion</div>
+            <div>
+                <?php if (isset($sessionClean['user']) && $sessionClean['user']): ?>
+                    Déconnexion
+                <?php else: ?>
+                    Connexion
+                <?php endif; ?>
+            </div>
+        </a>
+        <?php if (isset($sessionClean['user']) && $sessionClean['user']['role'] === 'admin'): ?>
             <a href="index.php?role=admin&action=approvecomments" class="menu-item">
                 <img src="/../../../public/assets/images/admin.png" alt="Tableau de bord">
                 <div>Tableau de bord</div>
             </a>
+        <?php endif; ?>
     </div>
 </nav>

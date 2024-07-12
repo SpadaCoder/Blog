@@ -150,7 +150,7 @@ class PostController
      * @param array $serverClean Tableau nettoyé des données du serveur.
      * @throws \Exception Si le post avec l'ID spécifié n'existe pas.
      */
-    public function update(int $postId, array $serverClean)
+    public function update(int $postId, array $serverClean, array $sessionClean)
     {
         $post = $this->postManager->getOneById($postId);
 

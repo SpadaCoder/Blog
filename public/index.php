@@ -75,7 +75,7 @@ try {
             // Approbation des commentaires.
             if (isset($sessionClean['user']) && $sessionClean['user']['role'] === 'admin') {
                 if ('approvecomments' === $getClean['action']) {
-                    $commentController->displayCommentsToApprove();
+                    $commentController->displayCommentsToApprove($sessionClean);
                 }
                 // Ajout d'un Post.
                 if ('add' === $getClean['action'] && isset($getClean['objet']) && 'post' === $getClean['objet']) {
@@ -85,7 +85,7 @@ try {
                 if (isset($getClean['objet']) === TRUE && 'post' === $getClean['objet'] && isset($getClean['id'])) {
                     // Modification du Post.
                     if ('update' === $getClean['action']) {
-                        $postController->update($getClean['id'], $serverClean);
+                        $postController->update($getClean['id'], $serverClean, $sessionClean);
                     }
                     // Suppression du Post.
                     if ('delete' === $getClean['action']) {
