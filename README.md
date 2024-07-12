@@ -14,7 +14,8 @@ git clone https://github.com/SpadaCoder/Blog
 ```
 
 ## Base de données
-Par défaut, l'application utilise une base de données MySQL dénommée 'db', accessible à un utilisateur 'blog_w' dont le mot de passe est 'password'.
+Par défaut, l'application utilise une base de données MySQL dénommée 'mydb', accessible à un utilisateur 'blog_w' dont le mot de passe est 'password'.
+Vous pouvez récupérer la base de donnée dans le dossier db.
 Vous devez créer un fichier dénommé data.php avec les information suivantes :
 ```bash
 $dbServer = 'localhost';
