@@ -56,7 +56,7 @@ class CommentController
      * Affiche les commentaires en attente de modération.
      * Traite également les actions de modération des commentaires.
      */
-    public function displayCommentsToApprove()
+    public function displayCommentsToApprove(array $sessionClean)
     {
         // Récupérer les commentaires en attente de modération.
         $commentsToApprove = $this->commentManager->getCommentsToApprove();
